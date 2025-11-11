@@ -78,6 +78,15 @@ CREATE TABLE public.property_images (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
 );
 
+-- Favorites table (for users to save/like properties)
+CREATE TABLE public.favorites (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+  property_id UUID REFERENCES public.properties(id) ON DELETE CASCADE NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
+  UNIQUE(user_id, property_id)
+);
+
 -- Indexes for better query performance
 CREATE INDEX idx_properties_dealer_id ON public.properties(dealer_id);
 CREATE INDEX idx_properties_property_type ON public.properties(property_type);
@@ -90,11 +99,14 @@ CREATE INDEX idx_properties_created_at ON public.properties(created_at DESC);
 CREATE INDEX idx_property_images_property_id ON public.property_images(property_id);
 CREATE INDEX idx_profiles_role ON public.profiles(role);
 CREATE INDEX idx_profiles_is_approved ON public.profiles(is_approved);
+CREATE INDEX idx_favorites_user_id ON public.favorites(user_id);
+CREATE INDEX idx_favorites_property_id ON public.favorites(property_id);
 
 -- Enable Row Level Security (RLS)
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.properties ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.property_images ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.favorites ENABLE ROW LEVEL SECURITY;
 
 -- RLS Policies for profiles
 -- Anyone can view approved dealer profiles
@@ -244,6 +256,22 @@ CREATE POLICY "Admins can manage all property images"
       WHERE id = auth.uid() AND role = 'admin'
     )
   );
+
+-- RLS Policies for favorites
+-- Users can view their own favorites
+CREATE POLICY "Users can view own favorites"
+  ON public.favorites FOR SELECT
+  USING (auth.uid() = user_id);
+
+-- Users can add favorites
+CREATE POLICY "Users can add favorites"
+  ON public.favorites FOR INSERT
+  WITH CHECK (auth.uid() = user_id);
+
+-- Users can remove own favorites
+CREATE POLICY "Users can remove own favorites"
+  ON public.favorites FOR DELETE
+  USING (auth.uid() = user_id);
 
 -- Function to automatically create a profile on user signup
 CREATE OR REPLACE FUNCTION public.handle_new_user()

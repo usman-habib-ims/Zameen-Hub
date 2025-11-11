@@ -1,4 +1,9 @@
+'use client'
+
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
 import { Database } from '@/types/database.types'
 
 type Property = Database['public']['Tables']['properties']['Row'] & {
@@ -7,7 +12,59 @@ type Property = Database['public']['Tables']['properties']['Row'] & {
 }
 
 export default function PropertyCard({ property }: { property: Property }) {
+  const router = useRouter()
+  const [isFavorite, setIsFavorite] = useState(false)
+  const [isChecking, setIsChecking] = useState(true)
   const mainImage = property.property_images[0]?.image_url || '/placeholder-property.svg'
+
+  useEffect(() => {
+    checkFavorite()
+  }, [property.id])
+
+  const checkFavorite = async () => {
+    const supabase = createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+
+    if (user) {
+      const { data } = await supabase
+        .from('favorites')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('property_id', property.id)
+        .single()
+
+      setIsFavorite(!!data)
+    }
+    setIsChecking(false)
+  }
+
+  const handleToggleFavorite = async (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    const supabase = createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+
+    if (!user) {
+      router.push('/login')
+      return
+    }
+
+    if (isFavorite) {
+      await supabase
+        .from('favorites')
+        .delete()
+        .eq('user_id', user.id)
+        .eq('property_id', property.id)
+      setIsFavorite(false)
+    } else {
+      await supabase.from('favorites').insert({
+        user_id: user.id,
+        property_id: property.id,
+      })
+      setIsFavorite(true)
+    }
+  }
 
   return (
     <Link href={`/properties/${property.id}`} className="block group">
@@ -21,14 +78,41 @@ export default function PropertyCard({ property }: { property: Property }) {
           {/* Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
-          {property.featured && (
-            <span className="absolute top-3 right-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg flex items-center gap-1">
-              <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-              </svg>
-              Featured
-            </span>
-          )}
+          <div className="absolute top-3 right-3 flex items-center gap-2 z-10">
+            {property.featured && (
+              <span className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg flex items-center gap-1">
+                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                </svg>
+                Featured
+              </span>
+            )}
+            {!isChecking && (
+              <button
+                onClick={handleToggleFavorite}
+                className="bg-white/90 hover:bg-white rounded-full p-2 shadow-lg transition-all group/btn"
+                title={isFavorite ? 'Remove from saved' : 'Save property'}
+              >
+                <svg
+                  className={`w-5 h-5 transition-all ${
+                    isFavorite
+                      ? 'text-red-600 fill-current'
+                      : 'text-gray-600 group-hover/btn:text-red-600'
+                  }`}
+                  fill={isFavorite ? 'currentColor' : 'none'}
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                  />
+                </svg>
+              </button>
+            )}
+          </div>
           <span className="absolute top-3 left-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3 py-1.5 rounded-full text-xs font-bold capitalize shadow-lg">
             {property.property_type}
           </span>
