@@ -24,11 +24,7 @@ export default function PropertyDetailPage() {
   const [showPhone, setShowPhone] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
   const [isFavorite, setIsFavorite] = useState(false);
-
-  useEffect(() => {
-    fetchProperty();
-    checkFavorite();
-  }, [params.id]);
+  const [canEdit, setCanEdit] = useState(false);
 
   const fetchProperty = async () => {
     const propertyId = Array.isArray(params.id) ? params.id[0] : params.id;
@@ -48,7 +44,16 @@ export default function PropertyDetailPage() {
       .single();
 
     if (!error && data) {
-      setProperty(data as any);
+      setProperty(data as unknown as Property);
+      // Determine edit permission based on ownership
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (user && (data as unknown as Property).user_id === user.id) {
+        setCanEdit(true);
+      } else {
+        setCanEdit(false);
+      }
     }
     setLoading(false);
   };
@@ -73,6 +78,12 @@ export default function PropertyDetailPage() {
       setIsFavorite(!!data);
     }
   };
+
+  useEffect(() => {
+    fetchProperty();
+    checkFavorite();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params.id]);
 
   const handleContact = async () => {
     const propertyId = Array.isArray(params.id) ? params.id[0] : params.id;
@@ -191,6 +202,7 @@ export default function PropertyDetailPage() {
                   <button
                     key={idx}
                     onClick={() => setSelectedImage(idx)}
+                    aria-label={`Select image ${idx + 1}`}
                     className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden ${
                       selectedImage === idx ? "ring-2 ring-blue-600" : ""
                     }`}
@@ -210,6 +222,29 @@ export default function PropertyDetailPage() {
             <h1 className="text-3xl font-bold text-gray-900 mb-4">
               {property.title}
             </h1>
+            {canEdit && (
+              <div className="mb-4">
+                <Link
+                  href={`/properties/${property.id}/edit`}
+                  className="inline-flex items-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors"
+                >
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M11 5h2m-7 7h2m2 0h6m-8 4h8M7 9h8m4-5H5a2 2 0 00-2 2v12a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2z"
+                    />
+                  </svg>
+                  Edit Listing
+                </Link>
+              </div>
+            )}
             <p className="text-3xl font-bold text-blue-600 mb-4">
               PKR {property.price?.toLocaleString()}
             </p>
