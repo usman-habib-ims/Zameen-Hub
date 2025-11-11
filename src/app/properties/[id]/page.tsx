@@ -172,16 +172,13 @@ export default function PropertyDetailPage() {
       data: { user },
     } = await supabase.auth.getUser();
 
-    if (!user) {
-      router.push("/login");
-      return;
+    // If logged in, record contact; if not, just reveal phone number without redirect
+    if (user) {
+      await supabase.from("contacts").insert({
+        property_id: propertyId,
+        user_id: user.id,
+      });
     }
-
-    // Record contact
-    await supabase.from("contacts").insert({
-      property_id: propertyId,
-      user_id: user.id,
-    });
 
     setShowPhone(true);
   };
