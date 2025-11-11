@@ -1,4 +1,4 @@
-import { createClient as createSupabaseClient } from '@supabase/supabase-js'
+import { createClient as createSupabaseClient, SupabaseClient } from '@supabase/supabase-js'
 import { Database } from '@/types/database.types'
 
 // Custom storage that ONLY uses localStorage, never cookies
@@ -17,9 +17,17 @@ const customStorageAdapter = {
   },
 }
 
+// Singleton instance
+let supabaseInstance: SupabaseClient<Database> | null = null
+
 export function createClient() {
-  // Use supabase-js directly (not SSR version) to avoid cookie handling
-  return createSupabaseClient<Database>(
+  // Return existing instance if it exists
+  if (supabaseInstance) {
+    return supabaseInstance
+  }
+
+  // Create new instance only if it doesn't exist
+  supabaseInstance = createSupabaseClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
@@ -32,4 +40,6 @@ export function createClient() {
       },
     }
   )
+
+  return supabaseInstance
 }

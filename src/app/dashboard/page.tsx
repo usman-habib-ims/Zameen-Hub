@@ -138,7 +138,7 @@ export default function DashboardPage() {
                       <div className="flex-shrink-0 h-16 w-16">
                         <img
                           className="h-16 w-16 rounded object-cover"
-                          src={property.property_images[0]?.image_url || '/placeholder-property.jpg'}
+                          src={property.property_images[0]?.image_url || '/placeholder-property.svg'}
                           alt=""
                         />
                       </div>

@@ -463,7 +463,7 @@ export default function AdminPage() {
                   <div className="flex gap-6">
                     <div className="flex-shrink-0">
                       <img
-                        src={property.property_images[0]?.image_url || '/placeholder-property.jpg'}
+                        src={property.property_images[0]?.image_url || '/placeholder-property.svg'}
                         alt={property.title}
                         className="w-48 h-32 object-cover rounded-lg"
                       />

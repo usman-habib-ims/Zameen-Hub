@@ -7,7 +7,7 @@ type Property = Database['public']['Tables']['properties']['Row'] & {
 }
 
 export default function PropertyCard({ property }: { property: Property }) {
-  const mainImage = property.property_images[0]?.image_url || '/placeholder-property.jpg'
+  const mainImage = property.property_images[0]?.image_url || '/placeholder-property.svg'
 
   return (
     <Link href={`/properties/${property.id}`} className="block group">

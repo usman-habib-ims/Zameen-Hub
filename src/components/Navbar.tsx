@@ -58,8 +58,8 @@ export default function Navbar() {
     const supabase = createClient()
     await supabase.auth.signOut()
     setProfile(null)
-    router.push('/')
-    router.refresh()
+    // Force a hard refresh to clear all state
+    window.location.href = '/'
   }
 
   return (
