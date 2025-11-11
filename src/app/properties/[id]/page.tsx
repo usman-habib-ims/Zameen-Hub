@@ -26,6 +26,9 @@ export default function PropertyDetailPage() {
   const [isFavorite, setIsFavorite] = useState(false);
   const [canEdit, setCanEdit] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [updatingStatus, setUpdatingStatus] = useState<
+    false | "available" | "sold" | "rented"
+  >(false);
 
   const fetchProperty = async () => {
     const propertyId = Array.isArray(params.id) ? params.id[0] : params.id;
@@ -57,6 +60,40 @@ export default function PropertyDetailPage() {
       }
     }
     setLoading(false);
+  };
+
+  const handleUpdateStatus = async (
+    newStatus: "available" | "sold" | "rented"
+  ) => {
+    if (!property || updatingStatus) return;
+    setUpdatingStatus(newStatus);
+    try {
+      const supabase = createClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) {
+        window.location.href = "/login";
+        return;
+      }
+      const { error } = await supabase
+        .from("properties")
+        .update({ status: newStatus })
+        .eq("id", property.id);
+      if (error) {
+        alert("Failed to update status: " + error.message);
+        setUpdatingStatus(false);
+        return;
+      }
+      // Update local state
+      setProperty((prev) =>
+        prev ? ({ ...prev, status: newStatus } as Property) : prev
+      );
+      setUpdatingStatus(false);
+    } catch {
+      alert("Unexpected error updating status.");
+      setUpdatingStatus(false);
+    }
   };
 
   const handleDelete = async () => {
@@ -284,6 +321,44 @@ export default function PropertyDetailPage() {
                   </svg>
                   Edit Listing
                 </Link>
+                <div className="inline-flex items-center gap-2">
+                  <button
+                    onClick={() => handleUpdateStatus("available")}
+                    className={`px-3 py-2 rounded-lg font-semibold border-2 transition-colors ${
+                      property.status === "available"
+                        ? "border-green-600 text-green-700 bg-green-50"
+                        : "border-gray-300 text-gray-700 hover:bg-gray-50"
+                    } disabled:opacity-60`}
+                    disabled={!!updatingStatus}
+                    title="Mark as Available"
+                  >
+                    {updatingStatus === "available" ? "Updating…" : "Available"}
+                  </button>
+                  <button
+                    onClick={() => handleUpdateStatus("sold")}
+                    className={`px-3 py-2 rounded-lg font-semibold border-2 transition-colors ${
+                      property.status === "sold"
+                        ? "border-amber-600 text-amber-700 bg-amber-50"
+                        : "border-gray-300 text-gray-700 hover:bg-gray-50"
+                    } disabled:opacity-60`}
+                    disabled={!!updatingStatus}
+                    title="Mark as Sold"
+                  >
+                    {updatingStatus === "sold" ? "Updating…" : "Sold"}
+                  </button>
+                  <button
+                    onClick={() => handleUpdateStatus("rented")}
+                    className={`px-3 py-2 rounded-lg font-semibold border-2 transition-colors ${
+                      property.status === "rented"
+                        ? "border-blue-600 text-blue-700 bg-blue-50"
+                        : "border-gray-300 text-gray-700 hover:bg-gray-50"
+                    } disabled:opacity-60`}
+                    disabled={!!updatingStatus}
+                    title="Mark as Rented"
+                  >
+                    {updatingStatus === "rented" ? "Updating…" : "Rented"}
+                  </button>
+                </div>
                 <button
                   onClick={handleDelete}
                   className="inline-flex items-center gap-2 px-4 py-2 rounded-lg font-semibold border-2 border-red-600 text-red-600 hover:bg-red-50 transition-colors disabled:opacity-60"
