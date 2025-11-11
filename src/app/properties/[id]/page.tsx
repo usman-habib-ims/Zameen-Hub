@@ -286,7 +286,7 @@ export default function PropertyDetailPage() {
               )}
             </div>
 
-            {/* {showPhone ? (
+            {showPhone ? (
               <div className="mb-4 p-4 bg-green-50 rounded-lg">
                 <p className="text-sm text-gray-600 mb-1">Phone Number:</p>
                 <p className="text-xl font-bold text-green-700">
@@ -300,7 +300,7 @@ export default function PropertyDetailPage() {
               >
                 Show Phone Number
               </button>
-            )} */}
+            )}
 
             {showWhatsApp && (
               <a
