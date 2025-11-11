@@ -25,6 +25,7 @@ export default function PropertyDetailPage() {
   const [selectedImage, setSelectedImage] = useState(0);
   const [isFavorite, setIsFavorite] = useState(false);
   const [canEdit, setCanEdit] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const fetchProperty = async () => {
     const propertyId = Array.isArray(params.id) ? params.id[0] : params.id;
@@ -56,6 +57,46 @@ export default function PropertyDetailPage() {
       }
     }
     setLoading(false);
+  };
+
+  const handleDelete = async () => {
+    if (!property || deleting) return;
+    const confirmText = window.prompt(
+      "Type DELETE to confirm you want to permanently remove this listing."
+    );
+    if (confirmText !== "DELETE") {
+      if (confirmText !== null) {
+        alert("Deletion cancelled. You must type DELETE exactly to confirm.");
+      }
+      return;
+    }
+
+    setDeleting(true);
+    try {
+      const supabase = createClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) {
+        window.location.href = "/login";
+        return;
+      }
+      // RLS should ensure only owner/admin can delete
+      const { error } = await supabase
+        .from("properties")
+        .delete()
+        .eq("id", property.id);
+      if (error) {
+        alert("Failed to delete property: " + error.message);
+        setDeleting(false);
+        return;
+      }
+      alert("Property deleted successfully.");
+      router.push("/dashboard");
+    } catch {
+      alert("Unexpected error deleting property.");
+      setDeleting(false);
+    }
   };
 
   const checkFavorite = async () => {
@@ -223,7 +264,7 @@ export default function PropertyDetailPage() {
               {property.title}
             </h1>
             {canEdit && (
-              <div className="mb-4">
+              <div className="mb-4 flex flex-wrap items-center gap-3">
                 <Link
                   href={`/properties/${property.id}/edit`}
                   className="inline-flex items-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors"
@@ -243,6 +284,27 @@ export default function PropertyDetailPage() {
                   </svg>
                   Edit Listing
                 </Link>
+                <button
+                  onClick={handleDelete}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg font-semibold border-2 border-red-600 text-red-600 hover:bg-red-50 transition-colors disabled:opacity-60"
+                  disabled={deleting}
+                  title="Delete this listing"
+                >
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2M4 7h16"
+                    />
+                  </svg>
+                  {deleting ? "Deleting…" : "Delete Listing"}
+                </button>
               </div>
             )}
             <p className="text-3xl font-bold text-blue-600 mb-4">
