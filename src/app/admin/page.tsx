@@ -5,32 +5,38 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { Database } from '@/types/database.types'
+import { isAdminClient } from '@/lib/auth.client' // Import isAdminClient from the new client-side file
 
 type Property = Database['public']['Tables']['properties']['Row'] & {
   property_images: { image_url: string }[]
   profiles: { full_name: string | null; agency_name: string | null }
 }
 
-type Profile = Database['public']['Tables']['profiles']['Row']
+type Profile = Database['public']['Tables']['profiles']['Row'] & {
+  is_approved: boolean; // Add is_approved to Profile type
+}
 
 type Stats = {
   totalProperties: number
   pendingProperties: number
   approvedProperties: number
   totalDealers: number
+  pendingDealers: number // Add pendingDealers to stats
   totalUsers: number
 }
 
 export default function AdminPage() {
   const router = useRouter()
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'properties' | 'users'>('dashboard')
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'properties' | 'users' | 'dealer_approvals'>('dashboard')
   const [properties, setProperties] = useState<Property[]>([])
   const [users, setUsers] = useState<Profile[]>([])
+  const [pendingDealers, setPendingDealers] = useState<Profile[]>([]) // State for pending dealers
   const [stats, setStats] = useState<Stats>({
     totalProperties: 0,
     pendingProperties: 0,
     approvedProperties: 0,
     totalDealers: 0,
+    pendingDealers: 0,
     totalUsers: 0,
   })
   const [loading, setLoading] = useState(true)
@@ -48,21 +54,9 @@ export default function AdminPage() {
   }, [activeTab, propertyFilter, loading])
 
   const checkAuth = async () => {
-    const supabase = createClient()
-    const { data: { session } } = await supabase.auth.getSession()
+    const userIsAdmin = await isAdminClient() // Use the client-side helper function
 
-    if (!session?.user) {
-      router.push('/login')
-      return
-    }
-
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('role')
-      .eq('id', session.user.id)
-      .single()
-
-    if (profile?.role !== 'admin') {
+    if (!userIsAdmin) {
       router.push('/')
       return
     }
@@ -77,6 +71,8 @@ export default function AdminPage() {
       await fetchProperties()
     } else if (activeTab === 'users') {
       await fetchUsers()
+    } else if (activeTab === 'dealer_approvals') { // New tab for dealer approvals
+      await fetchPendingDealers()
     }
   }
 
@@ -90,17 +86,23 @@ export default function AdminPage() {
     const { count: pendingProperties } = await supabase
       .from('properties')
       .select('*', { count: 'exact', head: true })
-      .eq('approval_status', 'pending')
+      .eq('is_approved', false) // Use is_approved
 
     const { count: approvedProperties } = await supabase
       .from('properties')
       .select('*', { count: 'exact', head: true })
-      .eq('approval_status', 'approved')
+      .eq('is_approved', true) // Use is_approved
 
     const { count: totalDealers } = await supabase
       .from('profiles')
       .select('*', { count: 'exact', head: true })
       .eq('role', 'dealer')
+
+    const { count: pendingDealers } = await supabase // Fetch pending dealers
+      .from('profiles')
+      .select('*', { count: 'exact', head: true })
+      .eq('role', 'dealer')
+      .eq('is_approved', false)
 
     const { count: totalUsers } = await supabase
       .from('profiles')
@@ -111,6 +113,7 @@ export default function AdminPage() {
       pendingProperties: pendingProperties || 0,
       approvedProperties: approvedProperties || 0,
       totalDealers: totalDealers || 0,
+      pendingDealers: pendingDealers || 0, // Set pendingDealers stat
       totalUsers: totalUsers || 0,
     })
   }
@@ -119,28 +122,24 @@ export default function AdminPage() {
     setFetchingProperties(true)
     const supabase = createClient()
 
-    // First check user role
-    const { data: { user } } = await supabase.auth.getUser()
-    if (user) {
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('role')
-        .eq('id', user.id)
-        .single()
-      console.log('Current user role:', profile?.role)
-    }
-
     let query = supabase
       .from('properties')
       .select(`
         *,
         property_images(image_url),
-        profiles!properties_user_id_fkey(full_name, agency_name)
+        profiles!properties_dealer_id_fkey(full_name, agency_name)
       `)
       .order('created_at', { ascending: false })
 
-    if (propertyFilter !== 'all') {
-      query = query.eq('approval_status', propertyFilter)
+    if (propertyFilter === 'pending') {
+      query = query.eq('is_approved', false)
+    } else if (propertyFilter === 'approved') {
+      query = query.eq('is_approved', true)
+    } else if (propertyFilter === 'rejected') {
+      // Assuming 'rejected' properties are those that were once pending and then explicitly rejected.
+      // This might require an additional column or a more complex query if 'is_approved' is the only status.
+      // For now, we'll treat 'rejected' as not approved.
+      query = query.eq('is_approved', false)
     }
 
     console.log('Fetching properties with filter:', propertyFilter)
@@ -166,23 +165,56 @@ export default function AdminPage() {
       .order('created_at', { ascending: false })
 
     if (data) {
-      setUsers(data)
+      setUsers(data as Profile[])
     }
   }
 
-  const updateApprovalStatus = async (propertyId: string, status: 'approved' | 'rejected') => {
+  const fetchPendingDealers = async () => {
+    const supabase = createClient()
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('role', 'dealer')
+      .eq('is_approved', false)
+      .order('created_at', { ascending: false })
+
+    if (error) {
+      console.error('Error fetching pending dealers:', error)
+    } else if (data) {
+      setPendingDealers(data as Profile[])
+    }
+  }
+
+  const updateApprovalStatus = async (propertyId: string, status: boolean) => { // Changed status to boolean
     const supabase = createClient()
     const { error } = await supabase
       .from('properties')
-      .update({ approval_status: status })
+      .update({ is_approved: status }) // Use is_approved
       .eq('id', propertyId)
 
     if (error) {
       console.error('Error updating approval status:', error)
       alert('Error updating property status: ' + error.message)
     } else {
-      alert(`Property ${status} successfully!`)
+      alert(`Property ${status ? 'approved' : 'rejected'} successfully!`)
       fetchProperties()
+      fetchStats()
+    }
+  }
+
+  const updateDealerApprovalStatus = async (dealerId: string, status: boolean) => {
+    const supabase = createClient()
+    const { error } = await supabase
+      .from('profiles')
+      .update({ is_approved: status })
+      .eq('id', dealerId)
+
+    if (error) {
+      console.error('Error updating dealer approval status:', error)
+      alert('Error updating dealer status: ' + error.message)
+    } else {
+      alert(`Dealer ${status ? 'approved' : 'rejected'} successfully!`)
+      fetchPendingDealers()
       fetchStats()
     }
   }
@@ -284,6 +316,16 @@ export default function AdminPage() {
           >
             User Management
           </button>
+          <button
+            onClick={() => setActiveTab('dealer_approvals')}
+            className={`pb-4 px-1 border-b-2 font-medium text-sm ${
+              activeTab === 'dealer_approvals'
+                ? 'border-blue-500 text-blue-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            }`}
+          >
+            Dealer Approvals
+          </button>
         </nav>
       </div>
 
@@ -308,7 +350,7 @@ export default function AdminPage() {
             <div className="bg-white rounded-lg shadow-md p-6">
               <div className="flex items-center">
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-600">Pending Approval</p>
+                  <p className="text-sm font-medium text-gray-600">Pending Property Approvals</p>
                   <p className="text-3xl font-bold text-yellow-600">{stats.pendingProperties}</p>
                 </div>
                 <div className="bg-yellow-100 rounded-full p-3">
@@ -336,12 +378,12 @@ export default function AdminPage() {
             <div className="bg-white rounded-lg shadow-md p-6">
               <div className="flex items-center">
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-600">Total Dealers</p>
-                  <p className="text-3xl font-bold text-purple-600">{stats.totalDealers}</p>
+                  <p className="text-sm font-medium text-gray-600">Pending Dealer Approvals</p>
+                  <p className="text-3xl font-bold text-orange-600">{stats.pendingDealers}</p>
                 </div>
-                <div className="bg-purple-100 rounded-full p-3">
-                  <svg className="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                <div className="bg-orange-100 rounded-full p-3">
+                  <svg className="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                   </svg>
                 </div>
               </div>
@@ -355,8 +397,15 @@ export default function AdminPage() {
                 onClick={() => setActiveTab('properties')}
                 className="bg-yellow-50 border-2 border-yellow-200 rounded-lg p-4 text-left hover:bg-yellow-100 transition-colors"
               >
-                <h3 className="font-semibold text-gray-900">Review Pending</h3>
+                <h3 className="font-semibold text-gray-900">Review Pending Properties</h3>
                 <p className="text-sm text-gray-600 mt-1">{stats.pendingProperties} properties awaiting approval</p>
+              </button>
+              <button
+                onClick={() => setActiveTab('dealer_approvals')}
+                className="bg-orange-50 border-2 border-orange-200 rounded-lg p-4 text-left hover:bg-orange-100 transition-colors"
+              >
+                <h3 className="font-semibold text-gray-900">Review Pending Dealers</h3>
+                <p className="text-sm text-gray-600 mt-1">{stats.pendingDealers} dealers awaiting approval</p>
               </button>
               <button
                 onClick={() => setActiveTab('users')}
@@ -365,17 +414,7 @@ export default function AdminPage() {
                 <h3 className="font-semibold text-gray-900">Manage Users</h3>
                 <p className="text-sm text-gray-600 mt-1">{stats.totalUsers} registered users</p>
               </button>
-              <button
-                onClick={() => {
-                  setActiveTab('properties')
-                  setPropertyFilter('all')
-                }}
-                className="bg-green-50 border-2 border-green-200 rounded-lg p-4 text-left hover:bg-green-100 transition-colors"
-              >
-                <h3 className="font-semibold text-gray-900">All Properties</h3>
-                <p className="text-sm text-gray-600 mt-1">View and manage all listings</p>
-              </button>
-            </div>
+            </div> {/* Closing div for grid */}
           </div>
         </div>
       )}
@@ -540,6 +579,76 @@ export default function AdminPage() {
         </div>
       )}
 
+      {/* Dealer Approvals Tab */}
+      {activeTab === 'dealer_approvals' && (
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Pending Dealer Applications</h2>
+          {pendingDealers.length === 0 ? (
+            <div className="bg-white rounded-lg shadow-md p-12 text-center">
+              <p className="text-gray-600 text-lg mb-2">No pending dealer applications</p>
+              <p className="text-gray-500 text-sm">All dealers are currently approved or none have applied.</p>
+            </div>
+          ) : (
+            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Dealer
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Email
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Phone
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Applied On
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {pendingDealers.map((dealer) => (
+                    <tr key={dealer.id}>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm font-medium text-gray-900">{dealer.full_name || 'N/A'}</div>
+                        <div className="text-sm text-gray-500">{dealer.id.slice(0, 8)}...</div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {dealer.email}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {dealer.phone_number || 'N/A'}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {new Date(dealer.created_at).toLocaleDateString()}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <button
+                          onClick={() => updateDealerApprovalStatus(dealer.id, true)}
+                          className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 text-sm mr-2"
+                        >
+                          Approve
+                        </button>
+                        <button
+                          onClick={() => updateDealerApprovalStatus(dealer.id, false)}
+                          className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 text-sm"
+                        >
+                          Reject
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* User Management Tab */}
       {activeTab === 'users' && (
         <div>
@@ -554,7 +663,7 @@ export default function AdminPage() {
                     Role
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Agency
+                    Status
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Phone
@@ -583,11 +692,19 @@ export default function AdminPage() {
                         {user.role}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {user.agency_name || '-'}
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {user.role === 'dealer' ? (
+                        <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                          user.is_approved ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                        }`}>
+                          {user.is_approved ? 'Approved' : 'Pending'}
+                        </span>
+                      ) : (
+                        <span className="text-sm text-gray-500">-</span>
+                      )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {user.phone || '-'}
+                      {user.phone_number || '-'}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <select
@@ -595,7 +712,7 @@ export default function AdminPage() {
                         onChange={(e) => updateUserRole(user.id, e.target.value as any)}
                         className="border border-gray-300 rounded-md px-3 py-1 text-sm"
                       >
-                        <option value="user">User</option>
+                        <option value="regular">Regular</option>
                         <option value="dealer">Dealer</option>
                         <option value="admin">Admin</option>
                       </select>

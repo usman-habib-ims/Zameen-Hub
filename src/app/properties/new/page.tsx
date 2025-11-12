@@ -1,12 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { isApprovedDealerClient } from '@/lib/auth.client' // Import isApprovedDealerClient from the new client-side file
 
 export default function NewPropertyPage() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
+  const [pageLoading, setPageLoading] = useState(true) // New state for page loading
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -20,6 +22,18 @@ export default function NewPropertyPage() {
     furnishing: '' as '' | 'furnished' | 'semi-furnished' | 'unfurnished',
   })
   const [images, setImages] = useState<File[]>([])
+
+  useEffect(() => {
+    async function checkAuthorization() {
+      const approvedDealer = await isApprovedDealerClient() // Use the client-side helper
+      if (!approvedDealer) {
+        alert('You must be an approved dealer to add new properties.')
+        router.push('/') // Redirect unauthorized users
+      }
+      setPageLoading(false)
+    }
+    checkAuthorization()
+  }, [router])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -38,7 +52,7 @@ export default function NewPropertyPage() {
       const { data: property, error: propertyError } = await supabase
         .from('properties')
         .insert({
-          user_id: user.id,
+          dealer_id: user.id, // Changed from user_id to dealer_id
           title: formData.title,
           description: formData.description || null,
           property_type: formData.property_type,
@@ -49,8 +63,8 @@ export default function NewPropertyPage() {
           bedrooms: formData.bedrooms ? Number(formData.bedrooms) : null,
           bathrooms: formData.bathrooms ? Number(formData.bathrooms) : null,
           furnishing: formData.furnishing || null,
-          approval_status: 'pending',
-          featured: false,
+          is_approved: false, // Set to false by default for admin approval
+          is_featured: false,
         })
         .select()
         .single()
@@ -101,6 +115,14 @@ export default function NewPropertyPage() {
     if (e.target.files) {
       setImages(Array.from(e.target.files).slice(0, 10))
     }
+  }
+
+  if (pageLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    )
   }
 
   return (

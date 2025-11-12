@@ -31,9 +31,9 @@ export default function PropertyCard({ property }: { property: Property }) {
         .select('id')
         .eq('user_id', user.id)
         .eq('property_id', property.id)
-        .single()
+        .limit(1) // Use limit(1) instead of single()
 
-      setIsFavorite(!!data)
+      setIsFavorite(!!data && data.length > 0) // Check if data exists
     }
     setIsChecking(false)
   }
