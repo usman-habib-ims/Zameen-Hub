@@ -26,14 +26,21 @@ export default function PropertyCard({ property }: { property: Property }) {
     const { data: { user } } = await supabase.auth.getUser()
 
     if (user) {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('favorites')
         .select('id')
         .eq('user_id', user.id)
         .eq('property_id', property.id)
-        .limit(1) // Use limit(1) instead of single()
+        .limit(1)
 
-      setIsFavorite(!!data && data.length > 0) // Check if data exists
+      // Only set favorite if query was successful and data exists
+      if (!error && data && data.length > 0) {
+        setIsFavorite(true)
+      } else {
+        setIsFavorite(false)
+      }
+    } else {
+      setIsFavorite(false)
     }
     setIsChecking(false)
   }

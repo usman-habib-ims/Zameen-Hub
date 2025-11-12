@@ -602,9 +602,15 @@ export default function AdminPage() {
                           >
                             View
                           </Link>
+                          <Link
+                            href={`/properties/${property.id}/edit`}
+                            className="bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 text-center text-sm"
+                          >
+                            Edit
+                          </Link>
                           <button
                             onClick={() => deleteProperty(property.id)}
-                            className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 text-sm"
+                            className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 text-sm"
                           >
                             Delete
                           </button>

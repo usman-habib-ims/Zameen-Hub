@@ -41,7 +41,7 @@ export default function PropertyDetailPage() {
         `
         *,
         property_images(image_url, display_order),
-        profiles(full_name, phone, agency_name, bio)
+        profiles!properties_user_id_fkey(full_name, phone, agency_name, bio)
       `
       )
       .eq("id", propertyId)
@@ -49,12 +49,26 @@ export default function PropertyDetailPage() {
 
     if (!error && data) {
       setProperty(data as unknown as Property);
-      // Determine edit permission based on ownership
+      // Determine edit permission based on ownership or admin status
       const {
         data: { user },
       } = await supabase.auth.getUser();
-      if (user && (data as unknown as Property).user_id === user.id) {
-        setCanEdit(true);
+
+      if (user) {
+        // Check if user is owner
+        const isOwner = (data as unknown as Property).user_id === user.id;
+
+        // Check if user is admin
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("role")
+          .eq("id", user.id)
+          .single();
+
+        const isAdmin = profile?.role === "admin";
+
+        // Allow edit if owner or admin
+        setCanEdit(isOwner || isAdmin);
       } else {
         setCanEdit(false);
       }
@@ -146,14 +160,21 @@ export default function PropertyDetailPage() {
     } = await supabase.auth.getUser();
 
     if (user) {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from("favorites")
         .select("id")
         .eq("user_id", user.id)
         .eq("property_id", propertyId)
-        .single();
+        .limit(1);
 
-      setIsFavorite(!!data);
+      // Only set favorite if query was successful and data exists
+      if (!error && data && data.length > 0) {
+        setIsFavorite(true);
+      } else {
+        setIsFavorite(false);
+      }
+    } else {
+      setIsFavorite(false);
     }
   };
 
@@ -235,18 +256,28 @@ export default function PropertyDetailPage() {
   const mainImage =
     images[selectedImage]?.image_url || "/placeholder-property.svg";
 
-  // Check if WhatsApp button should be shown (apartments or Karachi houses)
-  const showWhatsApp =
-    property.property_type === "apartment" ||
-    (property.property_type === "house" &&
-      property.city.toLowerCase() === "karachi");
+  // WhatsApp functionality - use owner's phone number
+  const ownerPhone = property.profiles?.phone;
+  // Format phone number for WhatsApp (remove spaces, dashes, and ensure it starts with country code)
+  const formatPhoneForWhatsApp = (phone: string) => {
+    // Remove all non-digit characters
+    let cleaned = phone.replace(/\D/g, '');
+    // If it starts with 0, replace with 92 (Pakistan country code)
+    if (cleaned.startsWith('0')) {
+      cleaned = '92' + cleaned.substring(1);
+    }
+    // If it doesn't start with country code, add 92
+    if (!cleaned.startsWith('92')) {
+      cleaned = '92' + cleaned;
+    }
+    return cleaned;
+  };
 
-  // WhatsApp number: +92 333 4344159
-  const whatsappNumber = "923334344159"; // Remove + and spaces for URL
+  const whatsappNumber = ownerPhone ? formatPhoneForWhatsApp(ownerPhone) : null;
   const whatsappMessage = encodeURIComponent(
-    `Hi, I'm interested in this property: ${property.title}`
+    `Hi, I'm interested in this property: ${property.title}\n\nProperty Link: ${typeof window !== 'undefined' ? window.location.href : ''}`
   );
-  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
+  const whatsappUrl = whatsappNumber ? `https://wa.me/${whatsappNumber}?text=${whatsappMessage}` : null;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -456,22 +487,25 @@ export default function PropertyDetailPage() {
             </div>
 
             {showPhone ? (
-              <div className="mb-4 p-4 bg-green-50 rounded-lg">
+              <div className="mb-4 p-4 bg-green-50 rounded-lg border-2 border-green-200">
                 <p className="text-sm text-gray-600 mb-1">Phone Number:</p>
-                <p className="text-xl font-bold text-green-700">
+                <a
+                  href={`tel:${property.profiles?.phone}`}
+                  className="text-xl font-bold text-green-700 hover:text-green-800 block"
+                >
                   {property.profiles?.phone || "Not available"}
-                </p>
+                </a>
               </div>
             ) : (
               <button
                 onClick={handleContact}
-                className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-700 mb-4"
+                className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-700 mb-4 transition-colors"
               >
                 Show Phone Number
               </button>
             )}
 
-            {showWhatsApp && (
+            {whatsappUrl && ownerPhone ? (
               <a
                 href={whatsappUrl}
                 target="_blank"
@@ -488,7 +522,13 @@ export default function PropertyDetailPage() {
                 </svg>
                 Contact on WhatsApp
               </a>
-            )}
+            ) : ownerPhone ? (
+              <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <p className="text-sm text-yellow-700">
+                  WhatsApp contact not available for this property
+                </p>
+              </div>
+            ) : null}
 
             <button
               onClick={toggleFavorite}

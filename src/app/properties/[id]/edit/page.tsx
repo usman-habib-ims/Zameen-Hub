@@ -38,6 +38,15 @@ export default function EditPropertyPage() {
         return
       }
 
+      // Check if user is admin
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', user.id)
+        .single()
+
+      const isAdmin = profile?.role === 'admin'
+
       const { data, error } = await supabase
         .from('properties')
         .select('*')
@@ -50,8 +59,8 @@ export default function EditPropertyPage() {
         return
       }
 
-      // Only owner can edit; server RLS enforces this as well
-      if (data.user_id !== user.id) {
+      // Only owner or admin can edit; server RLS enforces this as well
+      if (data.user_id !== user.id && !isAdmin) {
         alert('You do not have permission to edit this listing.')
         router.push(`/properties/${propertyId}`)
         return
