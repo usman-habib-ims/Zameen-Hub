@@ -117,12 +117,12 @@ export default function AdminPage() {
     const { count: pendingProperties } = await supabase
       .from('properties')
       .select('*', { count: 'exact', head: true })
-      .eq('is_approved', false) // Use is_approved
+      .eq('approval_status', 'pending')
 
     const { count: approvedProperties } = await supabase
       .from('properties')
       .select('*', { count: 'exact', head: true })
-      .eq('is_approved', true) // Use is_approved
+      .eq('approval_status', 'approved')
 
     const { count: totalDealers } = await supabase
       .from('profiles')
@@ -163,14 +163,11 @@ export default function AdminPage() {
       .order('created_at', { ascending: false })
 
     if (propertyFilter === 'pending') {
-      query = query.eq('is_approved', false)
+      query = query.eq('approval_status', 'pending')
     } else if (propertyFilter === 'approved') {
-      query = query.eq('is_approved', true)
+      query = query.eq('approval_status', 'approved')
     } else if (propertyFilter === 'rejected') {
-      // Assuming 'rejected' properties are those that were once pending and then explicitly rejected.
-      // This might require an additional column or a more complex query if 'is_approved' is the only status.
-      // For now, we'll treat 'rejected' as not approved.
-      query = query.eq('is_approved', false)
+      query = query.eq('approval_status', 'rejected')
     }
 
     console.log('Fetching properties with filter:', propertyFilter)
@@ -216,18 +213,18 @@ export default function AdminPage() {
     }
   }
 
-  const updateApprovalStatus = async (propertyId: string, status: boolean) => { // Changed status to boolean
+  const updateApprovalStatus = async (propertyId: string, status: 'approved' | 'rejected') => {
     const supabase = createClient()
     const { error } = await supabase
       .from('properties')
-      .update({ is_approved: status }) // Use is_approved
+      .update({ approval_status: status })
       .eq('id', propertyId)
 
     if (error) {
       console.error('Error updating approval status:', error)
       alert('Error updating property status: ' + error.message)
     } else {
-      alert(`Property ${status ? 'approved' : 'rejected'} successfully!`)
+      alert(`Property ${status} successfully!`)
       fetchProperties()
       fetchStats()
     }
@@ -235,19 +232,40 @@ export default function AdminPage() {
 
   const updateDealerApprovalStatus = async (dealerId: string, status: 'approved' | 'rejected') => {
     const supabase = createClient()
-    const { error } = await supabase
-      .from('profiles')
-      .update({ approval_status: status })
-      .eq('id', dealerId)
 
-    if (error) {
-      console.error('Error updating dealer approval status:', error)
-      alert('Error updating dealer status: ' + error.message)
+    if (status === 'rejected') {
+      // For rejected dealers, delete their profile (which will also prevent login)
+      // We mark as rejected instead of deleting so there's a record
+      const { error } = await supabase
+        .from('profiles')
+        .update({ approval_status: 'rejected' })
+        .eq('id', dealerId)
+
+      if (error) {
+        console.error('Error rejecting dealer:', error)
+        alert('Error rejecting dealer: ' + error.message)
+        return
+      }
+
+      alert('Dealer rejected successfully! They will not be able to sign in.')
     } else {
-      alert(`Dealer ${status} successfully!`)
-      fetchPendingDealers()
-      fetchStats()
+      // For approved dealers, update their status
+      const { error } = await supabase
+        .from('profiles')
+        .update({ approval_status: status })
+        .eq('id', dealerId)
+
+      if (error) {
+        console.error('Error updating dealer approval status:', error)
+        alert('Error updating dealer status: ' + error.message)
+        return
+      }
+
+      alert(`Dealer approved successfully! They can now sign in and create listings.`)
     }
+
+    fetchPendingDealers()
+    fetchStats()
   }
 
   const updateUserRole = async (userId: string, newRole: 'user' | 'dealer' | 'admin') => {

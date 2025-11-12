@@ -52,7 +52,8 @@ export default function NewPropertyPage() {
       const { data: property, error: propertyError } = await supabase
         .from('properties')
         .insert({
-          dealer_id: user.id, // Changed from user_id to dealer_id
+          user_id: user.id, // Required field
+          dealer_id: user.id, // Set dealer_id for dealer-specific queries
           title: formData.title,
           description: formData.description || null,
           property_type: formData.property_type,
@@ -63,8 +64,8 @@ export default function NewPropertyPage() {
           bedrooms: formData.bedrooms ? Number(formData.bedrooms) : null,
           bathrooms: formData.bathrooms ? Number(formData.bathrooms) : null,
           furnishing: formData.furnishing || null,
-          is_approved: false, // Set to false by default for admin approval
-          is_featured: false,
+          approval_status: 'pending', // Set to pending by default for admin approval
+          featured: false,
         })
         .select()
         .single()

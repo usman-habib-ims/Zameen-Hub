@@ -36,7 +36,7 @@ export async function isDealerClient(): Promise<boolean> {
 
 export async function isApprovedDealerClient(): Promise<boolean> {
   const profile = await getUserProfileClient();
-  return profile?.role === 'dealer' && profile?.is_approved === true;
+  return profile?.role === 'dealer' && profile?.approval_status === 'approved';
 }
 
 export async function signOut() {

@@ -15,7 +15,7 @@ export async function getUserProfileServer() {
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('*, role, is_approved')
+    .select('*')
     .eq('id', user.id)
     .single()
 
@@ -34,5 +34,5 @@ export async function isDealerServer(): Promise<boolean> {
 
 export async function isApprovedDealerServer(): Promise<boolean> {
   const profile = await getUserProfileServer();
-  return profile?.role === 'dealer' && profile?.is_approved === true;
+  return profile?.role === 'dealer' && profile?.approval_status === 'approved';
 }
