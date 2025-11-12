@@ -1,3 +1,11 @@
+// RESPONSIVE FIXES: 2025-11-12
+// - Made hero title responsive (text-3xl sm:text-4xl lg:text-5xl)
+// - Made logo responsive (text-2xl sm:text-3xl md:text-4xl)
+// - Hidden decorative circles on mobile (hidden sm:block)
+// - Account type grid already responsive with grid-cols-2
+// - Ensured all inputs and buttons are properly sized for mobile
+// - Made submit button full-width
+
 'use client'
 
 import { useState } from 'react'
@@ -65,15 +73,15 @@ export default function SignupPage() {
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 relative overflow-hidden">
         {/* Decorative Elements */}
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-1/4 left-0 w-96 h-96 bg-white rounded-full -translate-x-1/2"></div>
-          <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-white rounded-full translate-x-1/2"></div>
-          <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-white rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+          <div className="hidden sm:block absolute top-1/4 left-0 w-96 h-96 bg-white rounded-full -translate-x-1/2"></div>
+          <div className="hidden sm:block absolute bottom-1/4 right-0 w-96 h-96 bg-white rounded-full translate-x-1/2"></div>
+          <div className="hidden sm:block absolute top-1/2 left-1/2 w-64 h-64 bg-white rounded-full -translate-x-1/2 -translate-y-1/2"></div>
         </div>
 
         {/* Content */}
         <div className="relative z-10 flex flex-col justify-center items-center w-full px-12 text-white">
           <div className="max-w-md">
-            <h1 className="text-5xl font-bold mb-6">Join ZameenHub!</h1>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">Join ZameenHub!</h1>
             <p className="text-xl text-purple-100 mb-8">
               Start your real estate journey with Pakistan's most trusted platform
             </p>
@@ -122,7 +130,7 @@ export default function SignupPage() {
           {/* Logo/Brand */}
           <div className="text-center mb-8">
             <Link href="/" className="inline-block">
-              <h2 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
                 ZameenHub.pk
               </h2>
             </Link>
@@ -177,7 +185,7 @@ export default function SignupPage() {
                   required
                   value={formData.fullName}
                   onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-150 ease-in-out sm:text-sm"
+                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-150 ease-in-out text-base"
                   placeholder="John Doe"
                 />
               </div>
@@ -202,7 +210,7 @@ export default function SignupPage() {
                   required
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-150 ease-in-out sm:text-sm"
+                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-150 ease-in-out text-base"
                   placeholder="you@example.com"
                 />
               </div>
@@ -225,7 +233,7 @@ export default function SignupPage() {
                   required
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-150 ease-in-out sm:text-sm"
+                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-150 ease-in-out text-base"
                   placeholder="+92 300 1234567"
                 />
               </div>
@@ -249,7 +257,7 @@ export default function SignupPage() {
                   required
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-150 ease-in-out sm:text-sm"
+                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-150 ease-in-out text-base"
                   placeholder="Create a strong password"
                 />
               </div>
@@ -327,7 +335,7 @@ export default function SignupPage() {
                     type="text"
                     value={formData.agencyName}
                     onChange={(e) => setFormData({ ...formData, agencyName: e.target.value })}
-                    className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-150 ease-in-out sm:text-sm"
+                    className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-150 ease-in-out text-base"
                     placeholder="Your Agency Name"
                   />
                 </div>

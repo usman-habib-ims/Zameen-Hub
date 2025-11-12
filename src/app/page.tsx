@@ -1,3 +1,10 @@
+// RESPONSIVE FIXES: 2025-11-12
+// - Hero title already responsive (text-5xl sm:text-6xl md:text-7xl)
+// - Made stats numbers responsive (text-3xl sm:text-4xl)
+// - Made icon containers responsive (w-12 h-12 sm:w-16 sm:h-16)
+// - Made decorative blobs hidden on mobile (hidden md:block) or reduced size
+// - Loading spinner kept at h-16 w-16 (acceptable on mobile)
+
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -87,9 +94,9 @@ export default function HomePage() {
       <section className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 text-white overflow-hidden">
         {/* Animated Background Pattern */}
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full mix-blend-overlay filter blur-3xl animate-blob"></div>
-          <div className="absolute top-0 right-0 w-96 h-96 bg-purple-300 rounded-full mix-blend-overlay filter blur-3xl animate-blob animation-delay-2000"></div>
-          <div className="absolute bottom-0 left-1/2 w-96 h-96 bg-pink-300 rounded-full mix-blend-overlay filter blur-3xl animate-blob animation-delay-4000"></div>
+          <div className="absolute top-0 left-0 w-64 h-64 md:w-96 md:h-96 bg-white rounded-full mix-blend-overlay filter blur-3xl animate-blob"></div>
+          <div className="absolute top-0 right-0 w-64 h-64 md:w-96 md:h-96 bg-purple-300 rounded-full mix-blend-overlay filter blur-3xl animate-blob animation-delay-2000"></div>
+          <div className="absolute bottom-0 left-1/2 w-64 h-64 md:w-96 md:h-96 bg-pink-300 rounded-full mix-blend-overlay filter blur-3xl animate-blob animation-delay-4000"></div>
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32">
@@ -123,19 +130,19 @@ export default function HomePage() {
             {/* Quick Stats */}
             <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
               <div className="text-center animate-fade-in-up animation-delay-600">
-                <div className="text-4xl font-bold text-blue-100">1000+</div>
+                <div className="text-3xl sm:text-4xl font-bold text-blue-100">1000+</div>
                 <div className="text-blue-200 mt-2">Properties</div>
               </div>
               <div className="text-center animate-fade-in-up animation-delay-700">
-                <div className="text-4xl font-bold text-blue-100">500+</div>
+                <div className="text-3xl sm:text-4xl font-bold text-blue-100">500+</div>
                 <div className="text-blue-200 mt-2">Dealers</div>
               </div>
               <div className="text-center animate-fade-in-up animation-delay-800">
-                <div className="text-4xl font-bold text-blue-100">50+</div>
+                <div className="text-3xl sm:text-4xl font-bold text-blue-100">50+</div>
                 <div className="text-blue-200 mt-2">Cities</div>
               </div>
               <div className="text-center animate-fade-in-up animation-delay-900">
-                <div className="text-4xl font-bold text-blue-100">24/7</div>
+                <div className="text-3xl sm:text-4xl font-bold text-blue-100">24/7</div>
                 <div className="text-blue-200 mt-2">Support</div>
               </div>
             </div>
@@ -200,8 +207,8 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center p-8 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 hover:shadow-xl transition-shadow duration-300">
-              <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg className="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
               </div>
@@ -212,8 +219,8 @@ export default function HomePage() {
             </div>
 
             <div className="text-center p-8 rounded-2xl bg-gradient-to-br from-purple-50 to-pink-50 hover:shadow-xl transition-shadow duration-300">
-              <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg className="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
                 </svg>
               </div>
@@ -224,8 +231,8 @@ export default function HomePage() {
             </div>
 
             <div className="text-center p-8 rounded-2xl bg-gradient-to-br from-green-50 to-emerald-50 hover:shadow-xl transition-shadow duration-300">
-              <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg className="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                 </svg>
               </div>

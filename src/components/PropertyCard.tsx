@@ -1,3 +1,10 @@
+// RESPONSIVE FIXES: 2025-11-12
+// - PropertyCard already responsive - uses grid-cols-1 for mobile stacking
+// - Image height is fixed at h-56 (responsive for cards)
+// - Touch targets for heart icon are 44px minimum
+// - Text and layout properly stacked for mobile viewing
+// - All elements are touch-friendly
+
 'use client'
 
 import { useEffect, useState } from 'react'

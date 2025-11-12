@@ -1,3 +1,12 @@
+// RESPONSIVE FIXES: 2025-11-12
+// - Made main image height responsive (h-64 sm:h-80 lg:h-96)
+// - Made title text responsive (text-xl sm:text-2xl md:text-3xl)
+// - Made price text responsive (text-2xl sm:text-3xl)
+// - Made grid responsive for better mobile layout
+// - Made thumbnails responsive (w-16 h-16 sm:w-20 sm:h-20)
+// - Made edit/status buttons stack on mobile (flex-col sm:flex-row, w-full sm:w-auto)
+// - Made stats grid responsive (grid-cols-2 sm:grid-cols-4)
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -297,10 +306,10 @@ export default function PropertyDetailPage() {
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
           <div className="bg-white rounded-lg shadow-md overflow-hidden">
-            <div className="relative h-96 bg-gray-200">
+            <div className="relative h-64 sm:h-80 lg:h-96 bg-gray-200">
               <img
                 src={mainImage}
                 alt={property.title}
@@ -319,7 +328,7 @@ export default function PropertyDetailPage() {
                     key={idx}
                     onClick={() => setSelectedImage(idx)}
                     aria-label={`Select image ${idx + 1}`}
-                    className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden ${
+                    className={`flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden ${
                       selectedImage === idx ? "ring-2 ring-blue-600" : ""
                     }`}
                   >
@@ -335,14 +344,14 @@ export default function PropertyDetailPage() {
           </div>
 
           <div className="bg-white rounded-lg shadow-md p-6 mt-6">
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-4">
               {property.title}
             </h1>
             {canEdit && (
-              <div className="mb-4 flex flex-wrap items-center gap-3">
+              <div className="mb-4 flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3">
                 <Link
                   href={`/properties/${property.id}/edit`}
-                  className="inline-flex items-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors"
                 >
                   <svg
                     className="w-4 h-4"
@@ -359,10 +368,10 @@ export default function PropertyDetailPage() {
                   </svg>
                   Edit Listing
                 </Link>
-                <div className="inline-flex items-center gap-2">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
                   <button
                     onClick={() => handleUpdateStatus("available")}
-                    className={`px-3 py-2 rounded-lg font-semibold border-2 transition-colors ${
+                    className={`w-full sm:w-auto px-3 py-2 rounded-lg font-semibold border-2 transition-colors ${
                       property.status === "available"
                         ? "border-green-600 text-green-700 bg-green-50"
                         : "border-gray-300 text-gray-700 hover:bg-gray-50"
@@ -374,7 +383,7 @@ export default function PropertyDetailPage() {
                   </button>
                   <button
                     onClick={() => handleUpdateStatus("sold")}
-                    className={`px-3 py-2 rounded-lg font-semibold border-2 transition-colors ${
+                    className={`w-full sm:w-auto px-3 py-2 rounded-lg font-semibold border-2 transition-colors ${
                       property.status === "sold"
                         ? "border-amber-600 text-amber-700 bg-amber-50"
                         : "border-gray-300 text-gray-700 hover:bg-gray-50"
@@ -386,7 +395,7 @@ export default function PropertyDetailPage() {
                   </button>
                   <button
                     onClick={() => handleUpdateStatus("rented")}
-                    className={`px-3 py-2 rounded-lg font-semibold border-2 transition-colors ${
+                    className={`w-full sm:w-auto px-3 py-2 rounded-lg font-semibold border-2 transition-colors ${
                       property.status === "rented"
                         ? "border-blue-600 text-blue-700 bg-blue-50"
                         : "border-gray-300 text-gray-700 hover:bg-gray-50"
@@ -399,7 +408,7 @@ export default function PropertyDetailPage() {
                 </div>
                 <button
                   onClick={handleDelete}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg font-semibold border-2 border-red-600 text-red-600 hover:bg-red-50 transition-colors disabled:opacity-60"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-semibold border-2 border-red-600 text-red-600 hover:bg-red-50 transition-colors disabled:opacity-60"
                   disabled={deleting}
                   title="Delete this listing"
                 >
@@ -420,7 +429,7 @@ export default function PropertyDetailPage() {
                 </button>
               </div>
             )}
-            <p className="text-3xl font-bold text-blue-600 mb-4">
+            <p className="text-2xl sm:text-3xl font-bold text-blue-600 mb-4">
               PKR {property.price?.toLocaleString()}
             </p>
 
@@ -433,7 +442,7 @@ export default function PropertyDetailPage() {
               </span>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
               {property.bedrooms && (
                 <div className="text-center p-3 bg-gray-50 rounded">
                   <p className="text-2xl font-bold text-gray-900">

@@ -1,3 +1,13 @@
+// RESPONSIVE FIXES: 2025-11-12
+// - Made tab navigation scrollable on mobile with overflow-x-auto
+// - Added responsive padding and whitespace-nowrap to all tab buttons
+// - Made header text responsive (text-2xl sm:text-3xl)
+// - Made stat numbers responsive (text-2xl sm:text-3xl)
+// - Made property images responsive (w-full sm:w-48 h-48 sm:h-32)
+// - Changed property card flex layout for mobile (flex-col sm:flex-row)
+// - Made action buttons full-width on mobile (w-full sm:w-auto)
+// - Wrapped tables in scrollable containers for mobile viewing
+
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -327,17 +337,17 @@ export default function AdminPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Admin Panel</h1>
-        <p className="text-gray-600">Manage your ZameenHub platform</p>
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Admin Panel</h1>
+        <p className="text-sm sm:text-base text-gray-600">Manage your ZameenHub platform</p>
       </div>
 
       {/* Tab Navigation */}
-      <div className="mb-8 border-b border-gray-200">
-        <nav className="-mb-px flex space-x-8">
+      <div className="mb-6 sm:mb-8 border-b border-gray-200 overflow-x-auto">
+        <nav className="-mb-px flex space-x-4 sm:space-x-8 min-w-max sm:min-w-0">
           <button
             onClick={() => setActiveTab('dashboard')}
-            className={`pb-4 px-1 border-b-2 font-medium text-sm ${
+            className={`pb-3 sm:pb-4 px-2 sm:px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
               activeTab === 'dashboard'
                 ? 'border-blue-500 text-blue-600'
                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -347,7 +357,7 @@ export default function AdminPage() {
           </button>
           <button
             onClick={() => setActiveTab('properties')}
-            className={`pb-4 px-1 border-b-2 font-medium text-sm ${
+            className={`pb-3 sm:pb-4 px-2 sm:px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
               activeTab === 'properties'
                 ? 'border-blue-500 text-blue-600'
                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -357,7 +367,7 @@ export default function AdminPage() {
           </button>
           <button
             onClick={() => setActiveTab('users')}
-            className={`pb-4 px-1 border-b-2 font-medium text-sm ${
+            className={`pb-3 sm:pb-4 px-2 sm:px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
               activeTab === 'users'
                 ? 'border-blue-500 text-blue-600'
                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -367,7 +377,7 @@ export default function AdminPage() {
           </button>
           <button
             onClick={() => setActiveTab('dealer_approvals')}
-            className={`pb-4 px-1 border-b-2 font-medium text-sm ${
+            className={`pb-3 sm:pb-4 px-2 sm:px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
               activeTab === 'dealer_approvals'
                 ? 'border-blue-500 text-blue-600'
                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -386,7 +396,7 @@ export default function AdminPage() {
               <div className="flex items-center">
                 <div className="flex-1">
                   <p className="text-sm font-medium text-gray-600">Total Properties</p>
-                  <p className="text-3xl font-bold text-gray-900">{stats.totalProperties}</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-gray-900">{stats.totalProperties}</p>
                 </div>
                 <div className="bg-blue-100 rounded-full p-3">
                   <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -400,7 +410,7 @@ export default function AdminPage() {
               <div className="flex items-center">
                 <div className="flex-1">
                   <p className="text-sm font-medium text-gray-600">Pending Property Approvals</p>
-                  <p className="text-3xl font-bold text-yellow-600">{stats.pendingProperties}</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-yellow-600">{stats.pendingProperties}</p>
                 </div>
                 <div className="bg-yellow-100 rounded-full p-3">
                   <svg className="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -414,7 +424,7 @@ export default function AdminPage() {
               <div className="flex items-center">
                 <div className="flex-1">
                   <p className="text-sm font-medium text-gray-600">Approved Properties</p>
-                  <p className="text-3xl font-bold text-green-600">{stats.approvedProperties}</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-green-600">{stats.approvedProperties}</p>
                 </div>
                 <div className="bg-green-100 rounded-full p-3">
                   <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -428,7 +438,7 @@ export default function AdminPage() {
               <div className="flex items-center">
                 <div className="flex-1">
                   <p className="text-sm font-medium text-gray-600">Pending Dealer Approvals</p>
-                  <p className="text-3xl font-bold text-orange-600">{stats.pendingDealers}</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-orange-600">{stats.pendingDealers}</p>
                 </div>
                 <div className="bg-orange-100 rounded-full p-3">
                   <svg className="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -548,17 +558,17 @@ export default function AdminPage() {
               <div className="grid grid-cols-1 gap-6">
                 {properties.map((property) => (
                 <div key={property.id} className="bg-white rounded-lg shadow-md p-6">
-                  <div className="flex gap-6">
+                  <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
                     <div className="flex-shrink-0">
                       <img
                         src={property.property_images[0]?.image_url || '/placeholder-property.svg'}
                         alt={property.title}
-                        className="w-48 h-32 object-cover rounded-lg"
+                        className="w-full sm:w-48 h-48 sm:h-32 object-cover rounded-lg"
                       />
                     </div>
                     <div className="flex-1">
-                      <div className="flex justify-between items-start">
-                        <div>
+                      <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
+                        <div className="flex-1">
                           <h3 className="text-xl font-semibold text-gray-900 mb-2">
                             {property.title}
                           </h3>
@@ -579,18 +589,18 @@ export default function AdminPage() {
                             {property.approval_status}
                           </span>
                         </div>
-                        <div className="flex flex-col gap-2">
+                        <div className="flex flex-col gap-2 w-full sm:w-auto">
                           {property.approval_status === 'pending' && (
                             <>
                               <button
                                 onClick={() => updateApprovalStatus(property.id, 'approved')}
-                                className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 text-sm"
+                                className="w-full sm:w-auto bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 text-sm"
                               >
                                 Approve
                               </button>
                               <button
                                 onClick={() => updateApprovalStatus(property.id, 'rejected')}
-                                className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 text-sm"
+                                className="w-full sm:w-auto bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 text-sm"
                               >
                                 Reject
                               </button>
@@ -598,19 +608,19 @@ export default function AdminPage() {
                           )}
                           <Link
                             href={`/properties/${property.id}`}
-                            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-center text-sm"
+                            className="w-full sm:w-auto bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-center text-sm"
                           >
                             View
                           </Link>
                           <Link
                             href={`/properties/${property.id}/edit`}
-                            className="bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 text-center text-sm"
+                            className="w-full sm:w-auto bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 text-center text-sm"
                           >
                             Edit
                           </Link>
                           <button
                             onClick={() => deleteProperty(property.id)}
-                            className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 text-sm"
+                            className="w-full sm:w-auto bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 text-sm"
                           >
                             Delete
                           </button>
@@ -645,7 +655,9 @@ export default function AdminPage() {
             </div>
           ) : (
             <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <table className="min-w-full divide-y divide-gray-200">
+              <div className="overflow-x-auto">
+                <div className="min-w-[640px]">
+                  <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -699,6 +711,8 @@ export default function AdminPage() {
                   ))}
                 </tbody>
               </table>
+                </div>
+              </div>
             </div>
           )}
         </div>
@@ -708,7 +722,9 @@ export default function AdminPage() {
       {activeTab === 'users' && (
         <div>
           <div className="bg-white rounded-lg shadow-md overflow-hidden">
-            <table className="min-w-full divide-y divide-gray-200">
+            <div className="overflow-x-auto">
+              <div className="min-w-[640px]">
+                <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -786,6 +802,8 @@ export default function AdminPage() {
                 ))}
               </tbody>
             </table>
+              </div>
+            </div>
           </div>
         </div>
       )}

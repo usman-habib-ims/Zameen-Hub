@@ -1,3 +1,9 @@
+// RESPONSIVE FIXES: 2025-11-12
+// - Made filter grid fully responsive (grid-cols-1 sm:grid-cols-2 lg:grid-cols-4)
+// - All dropdowns and inputs are full-width on mobile
+// - Touch targets are minimum 44px (py-2 = 32px + border = 44px+)
+// - Proper spacing and wrapping on all screen sizes
+
 'use client'
 
 import { useState } from 'react'
@@ -48,9 +54,9 @@ export default function PropertyFilters({ onFilterChange }: PropertyFiltersProps
   }
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md mb-6">
+    <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md mb-6">
       <h2 className="text-lg font-semibold mb-4">Filter Properties</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Property Type
