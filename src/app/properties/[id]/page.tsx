@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { Database } from "@/types/database.types";
+import { isLocalFavorite, addLocalFavorite, removeLocalFavorite } from "@/lib/favorites";
 
 type Property = Database["public"]["Tables"]["properties"]["Row"] & {
   property_images: { image_url: string; display_order: number }[];
@@ -160,6 +161,7 @@ export default function PropertyDetailPage() {
     } = await supabase.auth.getUser();
 
     if (user) {
+      // Check database for logged-in users
       const { data, error } = await supabase
         .from("favorites")
         .select("id")
@@ -174,7 +176,8 @@ export default function PropertyDetailPage() {
         setIsFavorite(false);
       }
     } else {
-      setIsFavorite(false);
+      // Check localStorage for anonymous users
+      setIsFavorite(isLocalFavorite(propertyId));
     }
   };
 
@@ -213,24 +216,31 @@ export default function PropertyDetailPage() {
       data: { user },
     } = await supabase.auth.getUser();
 
-    if (!user) {
-      router.push("/login");
-      return;
-    }
-
-    if (isFavorite) {
-      await supabase
-        .from("favorites")
-        .delete()
-        .eq("user_id", user.id)
-        .eq("property_id", propertyId);
-      setIsFavorite(false);
+    if (user) {
+      // Logged-in users: save to database
+      if (isFavorite) {
+        await supabase
+          .from("favorites")
+          .delete()
+          .eq("user_id", user.id)
+          .eq("property_id", propertyId);
+        setIsFavorite(false);
+      } else {
+        await supabase.from("favorites").insert({
+          user_id: user.id,
+          property_id: propertyId,
+        });
+        setIsFavorite(true);
+      }
     } else {
-      await supabase.from("favorites").insert({
-        user_id: user.id,
-        property_id: propertyId,
-      });
-      setIsFavorite(true);
+      // Anonymous users: save to localStorage
+      if (isFavorite) {
+        removeLocalFavorite(propertyId);
+        setIsFavorite(false);
+      } else {
+        addLocalFavorite(propertyId);
+        setIsFavorite(true);
+      }
     }
   };
 

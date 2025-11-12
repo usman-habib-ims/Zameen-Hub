@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import PropertyCard from '@/components/PropertyCard'
 import { Database } from '@/types/database.types'
+import { getLocalFavorites } from '@/lib/favorites'
 
 type Property = Database['public']['Tables']['properties']['Row'] & {
   property_images: { image_url: string }[]
@@ -27,12 +28,51 @@ export default function SavedPropertiesPage() {
     const { data: { user: currentUser } } = await supabase.auth.getUser()
 
     if (!currentUser) {
-      router.push('/login')
+      // For anonymous users, show localStorage favorites
+      setUser(null)
+      fetchLocalFavorites()
       return
     }
 
     setUser(currentUser)
     fetchSavedProperties(currentUser.id)
+  }
+
+  const fetchLocalFavorites = async () => {
+    setLoading(true)
+    try {
+      const localFavoriteIds = getLocalFavorites()
+
+      if (localFavoriteIds.length === 0) {
+        setProperties([])
+        setLoading(false)
+        return
+      }
+
+      const supabase = createClient()
+
+      // Fetch properties from localStorage IDs
+      const { data, error } = await supabase
+        .from('properties')
+        .select(`
+          *,
+          property_images(image_url),
+          profiles!properties_user_id_fkey(full_name, phone, agency_name)
+        `)
+        .in('id', localFavoriteIds)
+        .eq('approval_status', 'approved')
+        .order('created_at', { ascending: false })
+
+      if (error) {
+        console.error('Error fetching properties:', error)
+      } else if (data) {
+        setProperties(data as any)
+      }
+    } catch (err) {
+      console.error('Error in fetchLocalFavorites:', err)
+    } finally {
+      setLoading(false)
+    }
   }
 
   const fetchSavedProperties = async (userId: string) => {
@@ -86,21 +126,27 @@ export default function SavedPropertiesPage() {
   }
 
   const handleRemoveFavorite = async (propertyId: string) => {
-    if (!user) return
+    if (user) {
+      // Logged-in user: remove from database
+      const supabase = createClient()
+      const { error } = await supabase
+        .from('favorites')
+        .delete()
+        .eq('user_id', user.id)
+        .eq('property_id', propertyId)
 
-    const supabase = createClient()
-    const { error } = await supabase
-      .from('favorites')
-      .delete()
-      .eq('user_id', user.id)
-      .eq('property_id', propertyId)
-
-    if (!error) {
-      // Remove from local state
-      setProperties((prev) => prev.filter((p) => p.id !== propertyId))
+      if (!error) {
+        // Remove from local state
+        setProperties((prev) => prev.filter((p) => p.id !== propertyId))
+      } else {
+        console.error('Error removing favorite:', error)
+        alert('Failed to remove property from saved list')
+      }
     } else {
-      console.error('Error removing favorite:', error)
-      alert('Failed to remove property from saved list')
+      // Anonymous user: remove from localStorage
+      const { removeLocalFavorite } = require('@/lib/favorites')
+      removeLocalFavorite(propertyId)
+      setProperties((prev) => prev.filter((p) => p.id !== propertyId))
     }
   }
 
@@ -121,6 +167,15 @@ export default function SavedPropertiesPage() {
             ? "You haven't saved any properties yet"
             : `You have ${properties.length} saved ${properties.length === 1 ? 'property' : 'properties'}`}
         </p>
+        {!user && properties.length > 0 && (
+          <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <p className="text-blue-800 text-sm">
+              <strong>Note:</strong> Your saved properties are stored locally.
+              <Link href="/signup" className="underline ml-1 hover:text-blue-900">Sign up</Link> or
+              <Link href="/login" className="underline ml-1 hover:text-blue-900">log in</Link> to sync them across devices.
+            </p>
+          </div>
+        )}
       </div>
 
       {properties.length === 0 ? (

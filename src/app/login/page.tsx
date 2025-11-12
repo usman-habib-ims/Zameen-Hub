@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
+import { migrateLocalFavoritesToDatabase } from '@/lib/favorites'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -45,6 +46,9 @@ export default function LoginPage() {
           throw new Error('Your dealer account has been rejected. Please contact support for more information.')
         }
       }
+
+      // Migrate localStorage favorites to database
+      await migrateLocalFavoritesToDatabase(supabase, user.id)
 
       router.push('/')
       router.refresh()

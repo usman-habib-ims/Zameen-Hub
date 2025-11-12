@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Database } from '@/types/database.types'
+import { isLocalFavorite, addLocalFavorite, removeLocalFavorite } from '@/lib/favorites'
 
 type Property = Database['public']['Tables']['properties']['Row'] & {
   property_images: { image_url: string }[]
@@ -26,6 +27,7 @@ export default function PropertyCard({ property }: { property: Property }) {
     const { data: { user } } = await supabase.auth.getUser()
 
     if (user) {
+      // Check database for logged-in users
       const { data, error } = await supabase
         .from('favorites')
         .select('id')
@@ -40,7 +42,8 @@ export default function PropertyCard({ property }: { property: Property }) {
         setIsFavorite(false)
       }
     } else {
-      setIsFavorite(false)
+      // Check localStorage for anonymous users
+      setIsFavorite(isLocalFavorite(property.id))
     }
     setIsChecking(false)
   }
@@ -52,24 +55,31 @@ export default function PropertyCard({ property }: { property: Property }) {
     const supabase = createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
-    if (!user) {
-      router.push('/login')
-      return
-    }
-
-    if (isFavorite) {
-      await supabase
-        .from('favorites')
-        .delete()
-        .eq('user_id', user.id)
-        .eq('property_id', property.id)
-      setIsFavorite(false)
+    if (user) {
+      // Logged-in users: save to database
+      if (isFavorite) {
+        await supabase
+          .from('favorites')
+          .delete()
+          .eq('user_id', user.id)
+          .eq('property_id', property.id)
+        setIsFavorite(false)
+      } else {
+        await supabase.from('favorites').insert({
+          user_id: user.id,
+          property_id: property.id,
+        })
+        setIsFavorite(true)
+      }
     } else {
-      await supabase.from('favorites').insert({
-        user_id: user.id,
-        property_id: property.id,
-      })
-      setIsFavorite(true)
+      // Anonymous users: save to localStorage
+      if (isFavorite) {
+        removeLocalFavorite(property.id)
+        setIsFavorite(false)
+      } else {
+        addLocalFavorite(property.id)
+        setIsFavorite(true)
+      }
     }
   }
 

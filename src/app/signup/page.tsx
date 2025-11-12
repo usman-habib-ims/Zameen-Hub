@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
+import { migrateLocalFavoritesToDatabase } from '@/lib/favorites'
 
 export default function SignupPage() {
   const router = useRouter()
@@ -27,7 +28,7 @@ export default function SignupPage() {
 
     try {
       const supabase = createClient()
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
         options: {
@@ -45,6 +46,10 @@ export default function SignupPage() {
       if (formData.role === 'dealer') {
         setSuccess('Dealer account created successfully! Please wait for admin approval before signing in. You will be notified once approved.')
       } else {
+        // For regular users, migrate localStorage favorites to database
+        if (data.user) {
+          await migrateLocalFavoritesToDatabase(supabase, data.user.id)
+        }
         router.push('/login')
       }
     } catch (err: any) {
