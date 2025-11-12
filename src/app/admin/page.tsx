@@ -13,7 +13,7 @@ type Property = Database['public']['Tables']['properties']['Row'] & {
 }
 
 type Profile = Database['public']['Tables']['profiles']['Row'] & {
-  is_approved: boolean; // Add is_approved to Profile type
+  approval_status: 'pending' | 'approved' | 'rejected';
 }
 
 type Stats = {
@@ -45,7 +45,38 @@ export default function AdminPage() {
 
   useEffect(() => {
     checkAuth()
-  }, [])
+
+    const supabase = createClient()
+    const channel = supabase
+      .channel('dealer_approvals_channel')
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'profiles',
+          filter: 'role=eq.dealer',
+        },
+        (payload) => {
+          const updatedProfile = payload.new as Profile;
+          // Only update if the approval_status has changed from 'pending'
+          if (updatedProfile.approval_status !== 'pending') {
+            setPendingDealers((prevDealers) =>
+              prevDealers.filter((dealer) => dealer.id !== updatedProfile.id)
+            );
+            setStats((prevStats) => ({
+              ...prevStats,
+              pendingDealers: prevStats.pendingDealers > 0 ? prevStats.pendingDealers - 1 : 0,
+            }));
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
 
   useEffect(() => {
     if (!loading) {
@@ -102,7 +133,7 @@ export default function AdminPage() {
       .from('profiles')
       .select('*', { count: 'exact', head: true })
       .eq('role', 'dealer')
-      .eq('is_approved', false)
+      .eq('approval_status', 'pending')
 
     const { count: totalUsers } = await supabase
       .from('profiles')
@@ -175,7 +206,7 @@ export default function AdminPage() {
       .from('profiles')
       .select('*')
       .eq('role', 'dealer')
-      .eq('is_approved', false)
+      .eq('approval_status', 'pending')
       .order('created_at', { ascending: false })
 
     if (error) {
@@ -202,18 +233,18 @@ export default function AdminPage() {
     }
   }
 
-  const updateDealerApprovalStatus = async (dealerId: string, status: boolean) => {
+  const updateDealerApprovalStatus = async (dealerId: string, status: 'approved' | 'rejected') => {
     const supabase = createClient()
     const { error } = await supabase
       .from('profiles')
-      .update({ is_approved: status })
+      .update({ approval_status: status })
       .eq('id', dealerId)
 
     if (error) {
       console.error('Error updating dealer approval status:', error)
       alert('Error updating dealer status: ' + error.message)
     } else {
-      alert(`Dealer ${status ? 'approved' : 'rejected'} successfully!`)
+      alert(`Dealer ${status} successfully!`)
       fetchPendingDealers()
       fetchStats()
     }
@@ -628,13 +659,13 @@ export default function AdminPage() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <button
-                          onClick={() => updateDealerApprovalStatus(dealer.id, true)}
+                          onClick={() => updateDealerApprovalStatus(dealer.id, 'approved')}
                           className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 text-sm mr-2"
                         >
                           Approve
                         </button>
                         <button
-                          onClick={() => updateDealerApprovalStatus(dealer.id, false)}
+                          onClick={() => updateDealerApprovalStatus(dealer.id, 'rejected')}
                           className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 text-sm"
                         >
                           Reject
@@ -695,9 +726,11 @@ export default function AdminPage() {
                     <td className="px-6 py-4 whitespace-nowrap">
                       {user.role === 'dealer' ? (
                         <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                          user.is_approved ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                          user.approval_status === 'approved' ? 'bg-green-100 text-green-800' :
+                          user.approval_status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                          'bg-red-100 text-red-800'
                         }`}>
-                          {user.is_approved ? 'Approved' : 'Pending'}
+                          {user.approval_status.charAt(0).toUpperCase() + user.approval_status.slice(1)}
                         </span>
                       ) : (
                         <span className="text-sm text-gray-500">-</span>
