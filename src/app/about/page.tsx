@@ -322,3 +322,5 @@ export default function AboutPage() {
     </div>
   )
 }
+
+// web working fine
