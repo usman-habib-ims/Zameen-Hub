@@ -75,6 +75,7 @@ export type Database = {
       profiles: {
         Row: {
           agency_name: string | null
+          approval_status: Database["public"]["Enums"]["approval_status"]
           bio: string | null
           created_at: string
           full_name: string | null
@@ -86,6 +87,7 @@ export type Database = {
         }
         Insert: {
           agency_name?: string | null
+          approval_status?: Database["public"]["Enums"]["approval_status"]
           bio?: string | null
           created_at?: string
           full_name?: string | null
@@ -97,6 +99,7 @@ export type Database = {
         }
         Update: {
           agency_name?: string | null
+          approval_status?: Database["public"]["Enums"]["approval_status"]
           bio?: string | null
           created_at?: string
           full_name?: string | null
