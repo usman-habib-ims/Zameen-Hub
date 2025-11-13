@@ -4,70 +4,75 @@
 // - Subtle shadow and hover effects
 // - Mobile-responsive hamburger menu
 
-'use client'
+"use client";
 
-import { useEffect, useState } from 'react'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { createClient } from '@/lib/supabase/client'
-import { Database } from '@/types/database.types'
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
+import { Database } from "@/types/database.types";
 
-type Profile = Database['public']['Tables']['profiles']['Row']
+type Profile = Database["public"]["Tables"]["profiles"]["Row"];
 
 export default function Navbar() {
-  const router = useRouter()
-  const [profile, setProfile] = useState<Profile | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const router = useRouter();
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const fetchProfile = async () => {
-      const supabase = createClient()
+      const supabase = createClient();
 
       // Get current session
-      const { data: { session } } = await supabase.auth.getSession()
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
 
       if (session?.user) {
         const { data } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', session.user.id)
-          .single()
+          .from("profiles")
+          .select("*")
+          .eq("id", session.user.id)
+          .single();
 
-        setProfile(data)
+        setProfile(data);
       }
-      setLoading(false)
-    }
+      setLoading(false);
+    };
 
-    fetchProfile()
+    fetchProfile();
 
     // Listen for auth state changes
-    const supabase = createClient()
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const supabase = createClient();
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session?.user) {
         supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', session.user.id)
+          .from("profiles")
+          .select("*")
+          .eq("id", session.user.id)
           .single()
-          .then(({ data }) => setProfile(data))
+          .then(({ data }) => setProfile(data));
       } else {
-        setProfile(null)
+        setProfile(null);
       }
-    })
+    });
 
     return () => {
-      subscription.unsubscribe()
-    }
-  }, [])
+      subscription.unsubscribe();
+    };
+  }, []);
 
   const handleSignOut = async () => {
-    const supabase = createClient()
-    await supabase.auth.signOut()
-    setProfile(null)
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    setProfile(null);
     // Force a hard refresh to clear all state
-    window.location.href = '/'
-  }
+    window.location.href = "/";
+  };
 
   return (
     <nav className="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-200">
@@ -75,13 +80,14 @@ export default function Navbar() {
         <div className="flex justify-between h-[4.8rem]">
           <div className="flex items-center">
             <Link href="/" className="flex items-center group">
-              <span className="text-2xl sm:text-3xl font-bold text-[#33a137] tracking-tight">
-                Zameen
-              </span>
-              <span className="text-2xl sm:text-3xl font-light text-gray-600">
-                Hub
-              </span>
-              <span className="text-sm font-medium text-gray-500 ml-1">.pk</span>
+              <Image
+                src="/z-logo-1.jpg"
+                alt="ZameenHub Logo"
+                width={120}
+                height={48}
+                className="h-16 w-auto"
+                priority
+              />
             </Link>
             <div className="hidden md:ml-10 md:flex md:space-x-1">
               <Link
@@ -96,7 +102,7 @@ export default function Navbar() {
               >
                 About
               </Link>
-              {profile?.role === 'dealer' && (
+              {profile?.role === "dealer" && (
                 <Link
                   href="/dashboard"
                   className="text-[#444444] hover:text-[#33a137] inline-flex items-center px-3 py-2 text-sm font-medium transition-colors duration-200"
@@ -104,7 +110,7 @@ export default function Navbar() {
                   Dashboard
                 </Link>
               )}
-              {profile?.role === 'admin' && (
+              {profile?.role === "admin" && (
                 <Link
                   href="/admin"
                   className="text-[#444444] hover:text-[#33a137] inline-flex items-center px-3 py-2 text-sm font-medium transition-colors duration-200"
@@ -140,7 +146,7 @@ export default function Navbar() {
               </>
             ) : profile ? (
               <>
-                {profile.role === 'dealer' && (
+                {profile.role === "dealer" && (
                   <Link
                     href="/properties/new"
                     className="hidden sm:inline-flex bg-[#33a137] text-white hover:bg-[#2a8a2e] px-5 py-2.5 rounded text-sm font-bold transition-all duration-200 shadow-sm hover:shadow-md"
@@ -152,7 +158,7 @@ export default function Navbar() {
                   href="/profile"
                   className="hidden sm:inline-flex text-[#767676] hover:text-[#33a137] px-4 py-2 text-sm font-medium transition-colors duration-200"
                 >
-                  {profile.full_name || 'Profile'}
+                  {profile.full_name || "Profile"}
                 </Link>
                 <button
                   onClick={handleSignOut}
@@ -170,12 +176,32 @@ export default function Navbar() {
             >
               <span className="sr-only">Open main menu</span>
               {!mobileMenuOpen ? (
-                <svg className="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                <svg
+                  className="block h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
                 </svg>
               ) : (
-                <svg className="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="block h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               )}
             </button>
@@ -201,7 +227,7 @@ export default function Navbar() {
             >
               About
             </Link>
-            {profile?.role === 'dealer' && (
+            {profile?.role === "dealer" && (
               <Link
                 href="/dashboard"
                 className="block px-3 py-3 rounded text-base font-medium text-[#444444] hover:text-[#33a137] hover:bg-gray-50 min-h-[44px] transition-colors duration-200"
@@ -210,7 +236,7 @@ export default function Navbar() {
                 Dashboard
               </Link>
             )}
-            {profile?.role === 'admin' && (
+            {profile?.role === "admin" && (
               <Link
                 href="/admin"
                 className="block px-3 py-3 rounded text-base font-medium text-[#444444] hover:text-[#33a137] hover:bg-gray-50 min-h-[44px] transition-colors duration-200"
@@ -247,7 +273,7 @@ export default function Navbar() {
               </>
             ) : profile ? (
               <>
-                {profile.role === 'dealer' && (
+                {profile.role === "dealer" && (
                   <Link
                     href="/properties/new"
                     className="block px-3 py-3 rounded text-base font-bold bg-[#33a137] text-white hover:bg-[#2a8a2e] min-h-[44px] transition-all duration-200"
@@ -261,12 +287,12 @@ export default function Navbar() {
                   className="block px-3 py-3 rounded text-base font-medium text-[#444444] hover:text-[#33a137] hover:bg-gray-50 min-h-[44px] transition-colors duration-200"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  {profile.full_name || 'Profile'}
+                  {profile.full_name || "Profile"}
                 </Link>
                 <button
                   onClick={() => {
-                    setMobileMenuOpen(false)
-                    handleSignOut()
+                    setMobileMenuOpen(false);
+                    handleSignOut();
                   }}
                   className="block w-full text-left px-3 py-3 rounded text-base font-medium text-[#767676] hover:text-[#d31a1a] hover:bg-gray-50 min-h-[44px] transition-colors duration-200"
                 >
@@ -278,5 +304,5 @@ export default function Navbar() {
         </div>
       )}
     </nav>
-  )
+  );
 }
