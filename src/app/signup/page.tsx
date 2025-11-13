@@ -69,8 +69,8 @@ export default function SignupPage() {
 
   return (
     <div className="min-h-screen flex">
-      {/* Left Side - Gradient Background with Pattern */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 relative overflow-hidden">
+      {/* Left Side - Zameen Green Background */}
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-[#33a137] to-[#2a8a2e] relative overflow-hidden">
         {/* Decorative Elements */}
         <div className="absolute inset-0 opacity-10">
           <div className="hidden sm:block absolute top-1/4 left-0 w-96 h-96 bg-white rounded-full -translate-x-1/2"></div>
@@ -82,7 +82,7 @@ export default function SignupPage() {
         <div className="relative z-10 flex flex-col justify-center items-center w-full px-12 text-white">
           <div className="max-w-md">
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">Join ZameenHub!</h1>
-            <p className="text-xl text-purple-100 mb-8">
+            <p className="text-xl text-white/90 mb-8">
               Start your real estate journey with Pakistan's most trusted platform
             </p>
             <div className="space-y-6">
@@ -94,7 +94,7 @@ export default function SignupPage() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg mb-1">For Everyone</h3>
-                  <p className="text-purple-100">Browse verified properties and find your dream home</p>
+                  <p className="text-white/80">Browse verified properties and find your dream home</p>
                 </div>
               </div>
               <div className="flex items-start space-x-3">
@@ -105,7 +105,7 @@ export default function SignupPage() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg mb-1">For Dealers</h3>
-                  <p className="text-purple-100">List properties and reach thousands of potential buyers</p>
+                  <p className="text-white/80">List properties and reach thousands of potential buyers</p>
                 </div>
               </div>
               <div className="flex items-start space-x-3">
@@ -116,7 +116,7 @@ export default function SignupPage() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg mb-1">Secure & Verified</h3>
-                  <p className="text-purple-100">All listings are verified by our admin team for quality</p>
+                  <p className="text-white/80">All listings are verified by our admin team for quality</p>
                 </div>
               </div>
             </div>
@@ -130,30 +130,32 @@ export default function SignupPage() {
           {/* Logo/Brand */}
           <div className="text-center mb-8">
             <Link href="/" className="inline-block">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                ZameenHub.pk
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold">
+                <span className="text-[#33a137]">Zameen</span>
+                <span className="text-[#767676]">Hub</span>
+                <span className="text-sm text-gray-500">.pk</span>
               </h2>
             </Link>
-            <p className="mt-3 text-gray-600 text-lg">Create your account</p>
+            <p className="mt-3 text-[#767676] text-lg">Create your account</p>
           </div>
 
           {/* Error Message */}
           {error && (
-            <div className="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-md">
+            <div className="mb-6 bg-red-50 border-l-4 border-[#d31a1a] p-4 rounded">
               <div className="flex">
-                <svg className="w-5 h-5 text-red-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-5 h-5 text-[#d31a1a] mr-2" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                 </svg>
-                <p className="text-sm text-red-700">{error}</p>
+                <p className="text-sm text-[#d31a1a]">{error}</p>
               </div>
             </div>
           )}
 
           {/* Success Message */}
           {success && (
-            <div className="mb-6 bg-green-50 border-l-4 border-green-500 p-4 rounded-md">
+            <div className="mb-6 bg-green-50 border-l-4 border-[#33a137] p-4 rounded">
               <div className="flex">
-                <svg className="w-5 h-5 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-5 h-5 text-[#33a137] mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
                 <div>
@@ -170,7 +172,7 @@ export default function SignupPage() {
           <form onSubmit={handleSignup} className="space-y-5">
             {/* Full Name Field */}
             <div>
-              <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="fullName" className="block text-sm font-medium text-[#444444] mb-2">
                 Full Name
               </label>
               <div className="relative">
@@ -185,7 +187,7 @@ export default function SignupPage() {
                   required
                   value={formData.fullName}
                   onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-150 ease-in-out text-base"
+                  className="block w-full pl-10 pr-3 py-3 border border-[#c1bfbf] rounded focus:ring-2 focus:ring-[#33a137] focus:border-transparent transition duration-150 ease-in-out text-base text-[#444444]"
                   placeholder="John Doe"
                 />
               </div>
@@ -193,7 +195,7 @@ export default function SignupPage() {
 
             {/* Email Field */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="email" className="block text-sm font-medium text-[#444444] mb-2">
                 Email Address
               </label>
               <div className="relative">
@@ -210,7 +212,7 @@ export default function SignupPage() {
                   required
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-150 ease-in-out text-base"
+                  className="block w-full pl-10 pr-3 py-3 border border-[#c1bfbf] rounded focus:ring-2 focus:ring-[#33a137] focus:border-transparent transition duration-150 ease-in-out text-base text-[#444444]"
                   placeholder="you@example.com"
                 />
               </div>
@@ -218,7 +220,7 @@ export default function SignupPage() {
 
             {/* Phone Field */}
             <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="phone" className="block text-sm font-medium text-[#444444] mb-2">
                 Phone Number
               </label>
               <div className="relative">
@@ -233,7 +235,7 @@ export default function SignupPage() {
                   required
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-150 ease-in-out text-base"
+                  className="block w-full pl-10 pr-3 py-3 border border-[#c1bfbf] rounded focus:ring-2 focus:ring-[#33a137] focus:border-transparent transition duration-150 ease-in-out text-base text-[#444444]"
                   placeholder="+92 300 1234567"
                 />
               </div>
@@ -241,7 +243,7 @@ export default function SignupPage() {
 
             {/* Password Field */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="password" className="block text-sm font-medium text-[#444444] mb-2">
                 Password
               </label>
               <div className="relative">
@@ -257,7 +259,7 @@ export default function SignupPage() {
                   required
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-150 ease-in-out text-base"
+                  className="block w-full pl-10 pr-3 py-3 border border-[#c1bfbf] rounded focus:ring-2 focus:ring-[#33a137] focus:border-transparent transition duration-150 ease-in-out text-base text-[#444444]"
                   placeholder="Create a strong password"
                 />
               </div>
@@ -265,7 +267,7 @@ export default function SignupPage() {
 
             {/* Account Type Selection */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-3">
+              <label className="block text-sm font-medium text-[#444444] mb-3">
                 Account Type
               </label>
               <div className="grid grid-cols-2 gap-4">
@@ -274,19 +276,19 @@ export default function SignupPage() {
                   onClick={() => setFormData({ ...formData, role: 'user' })}
                   className={`relative flex flex-col items-center p-4 border-2 rounded-lg transition-all duration-150 ${
                     formData.role === 'user'
-                      ? 'border-purple-500 bg-purple-50 shadow-md'
+                      ? 'border-[#33a137] bg-green-50 shadow-md'
                       : 'border-gray-200 hover:border-gray-300 bg-white'
                   }`}
                 >
-                  <svg className={`w-8 h-8 mb-2 ${formData.role === 'user' ? 'text-purple-600' : 'text-gray-400'}`} fill="currentColor" viewBox="0 0 20 20">
+                  <svg className={`w-8 h-8 mb-2 ${formData.role === 'user' ? 'text-[#33a137]' : 'text-gray-400'}`} fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
                   </svg>
-                  <span className={`text-sm font-medium ${formData.role === 'user' ? 'text-purple-700' : 'text-gray-700'}`}>
+                  <span className={`text-sm font-medium ${formData.role === 'user' ? 'text-[#33a137]' : 'text-gray-700'}`}>
                     Regular User
                   </span>
                   {formData.role === 'user' && (
                     <div className="absolute top-2 right-2">
-                      <svg className="w-5 h-5 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                      <svg className="w-5 h-5 text-[#33a137]" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
                     </div>
@@ -297,19 +299,19 @@ export default function SignupPage() {
                   onClick={() => setFormData({ ...formData, role: 'dealer' })}
                   className={`relative flex flex-col items-center p-4 border-2 rounded-lg transition-all duration-150 ${
                     formData.role === 'dealer'
-                      ? 'border-purple-500 bg-purple-50 shadow-md'
+                      ? 'border-[#33a137] bg-green-50 shadow-md'
                       : 'border-gray-200 hover:border-gray-300 bg-white'
                   }`}
                 >
-                  <svg className={`w-8 h-8 mb-2 ${formData.role === 'dealer' ? 'text-purple-600' : 'text-gray-400'}`} fill="currentColor" viewBox="0 0 20 20">
+                  <svg className={`w-8 h-8 mb-2 ${formData.role === 'dealer' ? 'text-[#33a137]' : 'text-gray-400'}`} fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z" clipRule="evenodd" />
                   </svg>
-                  <span className={`text-sm font-medium ${formData.role === 'dealer' ? 'text-purple-700' : 'text-gray-700'}`}>
+                  <span className={`text-sm font-medium ${formData.role === 'dealer' ? 'text-[#33a137]' : 'text-gray-700'}`}>
                     Dealer
                   </span>
                   {formData.role === 'dealer' && (
                     <div className="absolute top-2 right-2">
-                      <svg className="w-5 h-5 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                      <svg className="w-5 h-5 text-[#33a137]" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
                     </div>
@@ -321,7 +323,7 @@ export default function SignupPage() {
             {/* Agency Name (conditional) */}
             {formData.role === 'dealer' && (
               <div className="animate-fadeIn space-y-4">
-                <label htmlFor="agencyName" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="agencyName" className="block text-sm font-medium text-[#444444] mb-2">
                   Agency Name
                 </label>
                 <div className="relative">
@@ -335,7 +337,7 @@ export default function SignupPage() {
                     type="text"
                     value={formData.agencyName}
                     onChange={(e) => setFormData({ ...formData, agencyName: e.target.value })}
-                    className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-150 ease-in-out text-base"
+                    className="block w-full pl-10 pr-3 py-3 border border-[#c1bfbf] rounded focus:ring-2 focus:ring-[#33a137] focus:border-transparent transition duration-150 ease-in-out text-base text-[#444444]"
                     placeholder="Your Agency Name"
                   />
                 </div>
@@ -359,7 +361,7 @@ export default function SignupPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed transition duration-150 ease-in-out"
+              className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded shadow-sm text-sm font-bold text-white bg-[#33a137] hover:bg-[#2a8a2e] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#33a137] disabled:opacity-50 disabled:cursor-not-allowed transition duration-200"
             >
               {loading ? (
                 <>
@@ -379,10 +381,10 @@ export default function SignupPage() {
           <div className="mt-8">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300"></div>
+                <div className="w-full border-t border-[#c1bfbf]"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-4 bg-white text-gray-500">Already have an account?</span>
+                <span className="px-4 bg-white text-[#767676]">Already have an account?</span>
               </div>
             </div>
           </div>
@@ -391,7 +393,7 @@ export default function SignupPage() {
           <div className="mt-6 text-center">
             <Link
               href="/login"
-              className="inline-flex items-center justify-center w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-150 ease-in-out"
+              className="inline-flex items-center justify-center w-full px-4 py-3 border border-[#c1bfbf] rounded shadow-sm text-sm font-medium text-[#444444] bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#33a137] transition duration-150 ease-in-out"
             >
               Sign in to existing account
             </Link>
@@ -399,7 +401,7 @@ export default function SignupPage() {
 
           {/* Back to Home */}
           <div className="mt-6 text-center">
-            <Link href="/" className="text-sm text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">
+            <Link href="/" className="text-sm text-[#767676] hover:text-[#33a137] transition duration-150 ease-in-out">
               ← Back to Home
             </Link>
           </div>

@@ -23,6 +23,7 @@ export default function HomePage() {
   const [properties, setProperties] = useState<Property[]>([])
   const [loading, setLoading] = useState(true)
   const [filters, setFilters] = useState<any>({})
+  const [heroSearch, setHeroSearch] = useState({ city: '', propertyType: '' })
 
   useEffect(() => {
     fetchProperties()
@@ -90,103 +91,123 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 text-white overflow-hidden">
-        {/* Animated Background Pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-0 w-64 h-64 md:w-96 md:h-96 bg-white rounded-full mix-blend-overlay filter blur-3xl animate-blob"></div>
-          <div className="absolute top-0 right-0 w-64 h-64 md:w-96 md:h-96 bg-purple-300 rounded-full mix-blend-overlay filter blur-3xl animate-blob animation-delay-2000"></div>
-          <div className="absolute bottom-0 left-1/2 w-64 h-64 md:w-96 md:h-96 bg-pink-300 rounded-full mix-blend-overlay filter blur-3xl animate-blob animation-delay-4000"></div>
-        </div>
-
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32">
-          <div className="text-center">
-            <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight mb-8 animate-fade-in-up">
-              Find Your Dream Property
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-cyan-200 mt-3">
-                in Pakistan
-              </span>
+      {/* Hero Section - Zameen Style */}
+      <section className="relative bg-white pt-8 pb-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#444444] mb-4">
+              Find Properties in Pakistan
             </h1>
-            <p className="mt-8 max-w-3xl mx-auto text-xl sm:text-2xl text-blue-100 animate-fade-in-up animation-delay-200 leading-relaxed">
-              Discover thousands of verified properties from trusted dealers across the country
+            <p className="text-base sm:text-lg text-[#767676] max-w-2xl mx-auto">
+              Explore thousands of verified properties from trusted dealers across Pakistan
             </p>
+          </div>
 
-            {/* Call to Action Buttons */}
-            <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up animation-delay-400">
-              <Link
-                href="/signup"
-                className="px-10 py-5 bg-white text-blue-600 font-bold text-lg rounded-xl hover:bg-gray-100 transform hover:scale-105 transition-all duration-200 shadow-2xl"
-              >
-                Get Started
-              </Link>
-              <Link
-                href="#properties"
-                className="px-10 py-5 bg-transparent border-2 border-white text-white font-bold text-lg rounded-xl hover:bg-white hover:text-blue-600 transform hover:scale-105 transition-all duration-200"
-              >
-                Browse Properties
-              </Link>
-            </div>
-
-            {/* Quick Stats */}
-            <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
-              <div className="text-center animate-fade-in-up animation-delay-600">
-                <div className="text-3xl sm:text-4xl font-bold text-blue-100">1000+</div>
-                <div className="text-blue-200 mt-2">Properties</div>
+          {/* Hero Search Bar */}
+          <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg border border-[#c1bfbf]/30 p-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-[#444444] mb-2">City</label>
+                <select
+                  className="w-full border border-[#c1bfbf] rounded px-3 py-2.5 text-sm text-[#444444] focus:outline-none focus:ring-2 focus:ring-[#33a137]"
+                  value={heroSearch.city}
+                  onChange={(e) => setHeroSearch({ ...heroSearch, city: e.target.value })}
+                >
+                  <option value="">Select City</option>
+                  <option value="Karachi">Karachi</option>
+                  <option value="Lahore">Lahore</option>
+                  <option value="Islamabad">Islamabad</option>
+                  <option value="Rawalpindi">Rawalpindi</option>
+                  <option value="Faisalabad">Faisalabad</option>
+                  <option value="Multan">Multan</option>
+                </select>
               </div>
-              <div className="text-center animate-fade-in-up animation-delay-700">
-                <div className="text-3xl sm:text-4xl font-bold text-blue-100">500+</div>
-                <div className="text-blue-200 mt-2">Dealers</div>
+              <div>
+                <label className="block text-sm font-medium text-[#444444] mb-2">Property Type</label>
+                <select
+                  className="w-full border border-[#c1bfbf] rounded px-3 py-2.5 text-sm text-[#444444] focus:outline-none focus:ring-2 focus:ring-[#33a137]"
+                  value={heroSearch.propertyType}
+                  onChange={(e) => setHeroSearch({ ...heroSearch, propertyType: e.target.value })}
+                >
+                  <option value="">All Types</option>
+                  <option value="house">House</option>
+                  <option value="apartment">Apartment</option>
+                  <option value="plot">Plot</option>
+                  <option value="commercial">Commercial</option>
+                </select>
               </div>
-              <div className="text-center animate-fade-in-up animation-delay-800">
-                <div className="text-3xl sm:text-4xl font-bold text-blue-100">50+</div>
-                <div className="text-blue-200 mt-2">Cities</div>
-              </div>
-              <div className="text-center animate-fade-in-up animation-delay-900">
-                <div className="text-3xl sm:text-4xl font-bold text-blue-100">24/7</div>
-                <div className="text-blue-200 mt-2">Support</div>
+              <div className="flex items-end">
+                <button
+                  onClick={() => {
+                    setFilters({
+                      ...filters,
+                      city: heroSearch.city,
+                      propertyType: heroSearch.propertyType
+                    })
+                    // Scroll to properties section
+                    document.getElementById('properties')?.scrollIntoView({ behavior: 'smooth' })
+                  }}
+                  className="w-full bg-[#33a137] hover:bg-[#2a8a2e] text-white font-bold py-2.5 rounded transition-all duration-200 shadow-sm hover:shadow-md"
+                >
+                  Search Properties
+                </button>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Wave Separator */}
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg className="w-full h-auto" viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="rgb(249, 250, 251)"/>
-          </svg>
+          {/* Quick Stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+            <div className="text-center">
+              <div className="text-2xl sm:text-3xl font-bold text-[#33a137]">1000+</div>
+              <div className="text-sm text-[#767676] mt-1">Properties</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl sm:text-3xl font-bold text-[#33a137]">500+</div>
+              <div className="text-sm text-[#767676] mt-1">Dealers</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl sm:text-3xl font-bold text-[#33a137]">50+</div>
+              <div className="text-sm text-[#767676] mt-1">Cities</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl sm:text-3xl font-bold text-[#33a137]">24/7</div>
+              <div className="text-sm text-[#767676] mt-1">Support</div>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Property Categories */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-12 bg-[#f5f5f5]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+          <div className="mb-8">
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#444444] mb-2">
               Browse by Property Type
             </h2>
-            <p className="text-lg text-gray-600">
+            <p className="text-base text-[#767676]">
               Find the perfect property that matches your needs
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {[
               { type: 'house', icon: '🏡', name: 'Houses', count: '250+' },
               { type: 'apartment', icon: '🏢', name: 'Apartments', count: '180+' },
               { type: 'plot', icon: '📐', name: 'Plots', count: '320+' },
               { type: 'commercial', icon: '🏬', name: 'Commercial', count: '150+' }
-            ].map((category, index) => (
+            ].map((category) => (
               <button
                 key={category.type}
                 onClick={() => setFilters({ ...filters, propertyType: category.type })}
-                className="group bg-white rounded-2xl p-8 shadow-md hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 border-2 border-transparent hover:border-blue-500"
-                style={{ animationDelay: `${index * 100}ms` }}
+                className="group bg-white rounded-lg p-6 border border-[#c1bfbf]/30 hover:border-[#33a137] hover:shadow-lg transition-all duration-300"
               >
-                <div className="text-5xl mb-4 transform group-hover:scale-110 transition-transform duration-300">
+                <div className="text-4xl mb-3">
                   {category.icon}
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{category.name}</h3>
-                <p className="text-blue-600 font-semibold">{category.count} Listings</p>
+                <h3 className="text-lg font-bold text-[#444444] group-hover:text-[#33a137] transition-colors mb-1">
+                  {category.name}
+                </h3>
+                <p className="text-sm text-[#767676]">{category.count} Listings</p>
               </button>
             ))}
           </div>
@@ -194,50 +215,50 @@ export default function HomePage() {
       </section>
 
       {/* Features Section */}
-      <section className="py-16 bg-white">
+      <section className="py-12 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+          <div className="mb-8">
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#444444] mb-2">
               Why Choose ZameenHub?
             </h2>
-            <p className="text-lg text-gray-600">
+            <p className="text-base text-[#767676]">
               Pakistan's most trusted real estate platform
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center p-8 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 hover:shadow-xl transition-shadow duration-300">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                <svg className="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="p-6 rounded-lg border border-[#c1bfbf]/30 hover:border-[#33a137] hover:shadow-lg transition-all duration-300">
+              <div className="w-14 h-14 bg-[#33a137] rounded-full flex items-center justify-center mb-4">
+                <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Verified Listings</h3>
-              <p className="text-gray-600">
+              <h3 className="text-lg font-bold text-[#444444] mb-2">Verified Listings</h3>
+              <p className="text-sm text-[#767676]">
                 All properties are verified by our team to ensure authenticity and quality
               </p>
             </div>
 
-            <div className="text-center p-8 rounded-2xl bg-gradient-to-br from-purple-50 to-pink-50 hover:shadow-xl transition-shadow duration-300">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                <svg className="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+            <div className="p-6 rounded-lg border border-[#c1bfbf]/30 hover:border-[#33a137] hover:shadow-lg transition-all duration-300">
+              <div className="w-14 h-14 bg-[#33a137] rounded-full flex items-center justify-center mb-4">
+                <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Trusted Dealers</h3>
-              <p className="text-gray-600">
+              <h3 className="text-lg font-bold text-[#444444] mb-2">Trusted Dealers</h3>
+              <p className="text-sm text-[#767676]">
                 Connect with certified and experienced real estate professionals
               </p>
             </div>
 
-            <div className="text-center p-8 rounded-2xl bg-gradient-to-br from-green-50 to-emerald-50 hover:shadow-xl transition-shadow duration-300">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                <svg className="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            <div className="p-6 rounded-lg border border-[#c1bfbf]/30 hover:border-[#33a137] hover:shadow-lg transition-all duration-300">
+              <div className="w-14 h-14 bg-[#33a137] rounded-full flex items-center justify-center mb-4">
+                <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Quick & Easy</h3>
-              <p className="text-gray-600">
+              <h3 className="text-lg font-bold text-[#444444] mb-2">Quick & Easy</h3>
+              <p className="text-sm text-[#767676]">
                 Find your dream property in minutes with our advanced search filters
               </p>
             </div>
@@ -246,48 +267,40 @@ export default function HomePage() {
       </section>
 
       {/* Properties Listing Section */}
-      <section id="properties" className="py-16 bg-gray-50">
+      <section id="properties" className="py-12 bg-[#f5f5f5]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center mb-8">
-            <div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">
-                Featured Properties
-              </h2>
-              <p className="text-gray-600">
-                Explore our handpicked selection of premium properties
-              </p>
-            </div>
+          <div className="mb-6">
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#444444] mb-2">
+              Featured Properties
+            </h2>
+            <p className="text-base text-[#767676]">
+              Explore our handpicked selection of premium properties
+            </p>
           </div>
 
           <PropertyFilters onFilterChange={setFilters} />
 
           {loading ? (
-            <div className="text-center py-20">
-              <div className="inline-block animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600"></div>
-              <p className="mt-6 text-gray-600 text-lg">Loading amazing properties...</p>
+            <div className="text-center py-16">
+              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-4 border-[#33a137]"></div>
+              <p className="mt-4 text-[#767676] text-base">Loading properties...</p>
             </div>
           ) : properties.length === 0 ? (
-            <div className="text-center py-20 bg-white rounded-2xl shadow-sm">
-              <div className="text-6xl mb-6">🏘️</div>
-              <p className="text-gray-600 text-xl font-medium mb-2">No properties found</p>
-              <p className="text-gray-500">Try adjusting your search filters</p>
+            <div className="text-center py-16 bg-white rounded-lg border border-[#c1bfbf]/30">
+              <div className="text-5xl mb-4">🏘️</div>
+              <p className="text-[#444444] text-lg font-medium mb-1">No properties found</p>
+              <p className="text-[#767676] text-sm">Try adjusting your search filters</p>
             </div>
           ) : (
             <>
-              <div className="mb-6 flex items-center justify-between">
-                <p className="text-gray-700 font-medium">
-                  Showing <span className="text-blue-600 font-bold">{properties.length}</span> {properties.length === 1 ? 'property' : 'properties'}
+              <div className="mb-5">
+                <p className="text-[#444444] font-medium text-sm">
+                  Showing <span className="text-[#33a137] font-bold">{properties.length}</span> {properties.length === 1 ? 'property' : 'properties'}
                 </p>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {properties.map((property, index) => (
-                  <div
-                    key={property.id}
-                    className="animate-fade-in-up"
-                    style={{ animationDelay: `${index * 50}ms` }}
-                  >
-                    <PropertyCard property={property} />
-                  </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                {properties.map((property) => (
+                  <PropertyCard key={property.id} property={property} />
                 ))}
               </div>
             </>
@@ -296,24 +309,24 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
+      <section className="py-16 bg-[#33a137] text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-6">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-4">
             Ready to Find Your Dream Property?
           </h2>
-          <p className="text-xl text-blue-100 mb-10 max-w-2xl mx-auto">
+          <p className="text-base text-white/90 mb-8 max-w-2xl mx-auto">
             Join thousands of satisfied customers who found their perfect home through ZameenHub
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/signup"
-              className="px-8 py-4 bg-white text-blue-600 font-bold rounded-xl hover:bg-gray-100 transform hover:scale-105 transition-all duration-200 shadow-xl"
+              className="inline-block px-8 py-3 bg-white text-[#33a137] font-bold rounded hover:bg-gray-100 transition-all duration-200 shadow-md"
             >
               Get Started Now
             </Link>
             <Link
-              href="/properties"
-              className="px-8 py-4 bg-transparent border-2 border-white text-white font-bold rounded-xl hover:bg-white hover:text-blue-600 transform hover:scale-105 transition-all duration-200"
+              href="/"
+              className="inline-block px-8 py-3 bg-transparent border-2 border-white text-white font-bold rounded hover:bg-white hover:text-[#33a137] transition-all duration-200"
             >
               Browse All Properties
             </Link>

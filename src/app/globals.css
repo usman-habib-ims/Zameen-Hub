@@ -2,27 +2,51 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #444444;
+  --zameen-primary: #33a137;
+  --zameen-primary-dark: #2a8a2e;
+  --zameen-primary-light: #4db851;
+  --zameen-secondary: #0792ea;
+  --zameen-text-primary: #444444;
+  --zameen-text-secondary: #767676;
+  --zameen-border: #c1bfbf;
+  --zameen-bg-light: #f5f5f5;
+  --zameen-error: #d31a1a;
+  --zameen-shadow: rgba(0,0,0,0.08);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: var(--font-geist-mono);
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Zameen Color Palette */
+  --color-zameen-primary: var(--zameen-primary);
+  --color-zameen-primary-dark: var(--zameen-primary-dark);
+  --color-zameen-primary-light: var(--zameen-primary-light);
+  --color-zameen-secondary: var(--zameen-secondary);
+  --color-zameen-text-primary: var(--zameen-text-primary);
+  --color-zameen-text-secondary: var(--zameen-text-secondary);
+  --color-zameen-border: var(--zameen-border);
+  --color-zameen-bg-light: var(--zameen-bg-light);
+  --color-zameen-error: var(--zameen-error);
+
+  /* Border Radius (Zameen style) */
+  --radius-sm: 0.4rem;
+  --radius-md: 0.8rem;
+  --radius-lg: 1.2rem;
+  --radius-xl: 2.8rem;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Custom Animations */
@@ -107,20 +131,63 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar - Zameen style */
 ::-webkit-scrollbar {
   width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #f5f5f5;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #2563eb;
+  background: #33a137;
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #1d4ed8;
+  background: #2a8a2e;
+}
+
+/* Zameen-style hover transitions */
+.zameen-hover-lift {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.zameen-hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px var(--zameen-shadow);
+}
+
+/* Button styles matching Zameen */
+.btn-zameen-primary {
+  background-color: var(--zameen-primary);
+  color: white;
+  padding: 0.8rem 1.6rem;
+  border-radius: 0.4rem;
+  font-weight: 700;
+  transition: background-color 0.25s ease, transform 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-zameen-primary:hover {
+  background-color: var(--zameen-primary-dark);
+  transform: translateY(-1px);
+}
+
+.btn-zameen-secondary {
+  background-color: transparent;
+  color: var(--zameen-primary);
+  padding: 0.8rem 1.6rem;
+  border-radius: 0.4rem;
+  font-weight: 700;
+  transition: all 0.25s ease;
+  border: 2px solid var(--zameen-primary);
+  cursor: pointer;
+}
+
+.btn-zameen-secondary:hover {
+  background-color: var(--zameen-primary);
+  color: white;
 }

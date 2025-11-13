@@ -110,20 +110,20 @@ export default function ProfilePage() {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-4 border-[#33a137]"></div>
       </div>
     )
   }
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="bg-white rounded-lg shadow-md p-6">
+      <div className="bg-white rounded-lg shadow-sm border border-[#c1bfbf]/30 p-6">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold text-gray-900">My Profile</h1>
+          <h1 className="text-3xl font-bold text-[#444444]">My Profile</h1>
           {!editing && (
             <button
               onClick={() => setEditing(true)}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+              className="bg-[#33a137] text-white px-4 py-2 rounded-lg font-bold hover:bg-[#2a8a2e] transition-all duration-200 shadow-sm hover:shadow-md"
             >
               Edit Profile
             </button>
@@ -133,24 +133,24 @@ export default function ProfilePage() {
         {editing ? (
           <form onSubmit={handleUpdate} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-[#444444] mb-1">
                 Full Name
               </label>
               <input
                 type="text"
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full border border-[#c1bfbf] rounded-md px-3 py-2 text-[#444444] focus:outline-none focus:ring-2 focus:ring-[#33a137] focus:border-transparent transition duration-150"
                 value={formData.full_name}
                 onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-[#444444] mb-1">
                 Phone Number
               </label>
               <input
                 type="tel"
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full border border-[#c1bfbf] rounded-md px-3 py-2 text-[#444444] focus:outline-none focus:ring-2 focus:ring-[#33a137] focus:border-transparent transition duration-150"
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
               />
@@ -159,24 +159,24 @@ export default function ProfilePage() {
             {profile?.role === 'dealer' && (
               <>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-[#444444] mb-1">
                     Agency Name
                   </label>
                   <input
                     type="text"
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full border border-[#c1bfbf] rounded-md px-3 py-2 text-[#444444] focus:outline-none focus:ring-2 focus:ring-[#33a137] focus:border-transparent transition duration-150"
                     value={formData.agency_name}
                     onChange={(e) => setFormData({ ...formData, agency_name: e.target.value })}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-[#444444] mb-1">
                     Bio
                   </label>
                   <textarea
                     rows={4}
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full border border-[#c1bfbf] rounded-md px-3 py-2 text-[#444444] focus:outline-none focus:ring-2 focus:ring-[#33a137] focus:border-transparent transition duration-150"
                     value={formData.bio}
                     onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
                     placeholder="Tell potential buyers about yourself and your agency"
@@ -188,7 +188,7 @@ export default function ProfilePage() {
             <div className="flex gap-4">
               <button
                 type="submit"
-                className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
+                className="flex-1 bg-[#33a137] text-white py-2 px-4 rounded-lg font-bold hover:bg-[#2a8a2e] transition-all duration-200 shadow-sm hover:shadow-md"
               >
                 Save Changes
               </button>
@@ -203,7 +203,7 @@ export default function ProfilePage() {
                     bio: profile?.bio || '',
                   })
                 }}
-                className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+                className="px-6 py-2 border border-[#c1bfbf] rounded-lg text-[#444444] hover:bg-[#f5f5f5] transition-all duration-150"
               >
                 Cancel
               </button>
@@ -212,42 +212,42 @@ export default function ProfilePage() {
         ) : (
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-500">Full Name</label>
-              <p className="text-lg text-gray-900">{profile?.full_name || 'Not set'}</p>
+              <label className="block text-sm font-medium text-[#767676]">Full Name</label>
+              <p className="text-lg text-[#444444]">{profile?.full_name || 'Not set'}</p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-500">Email</label>
-              <p className="text-lg text-gray-900">{profile?.id}</p>
+              <label className="block text-sm font-medium text-[#767676]">Email</label>
+              <p className="text-lg text-[#444444]">{profile?.id}</p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-500">Phone Number</label>
-              <p className="text-lg text-gray-900">{profile?.phone || 'Not set'}</p>
+              <label className="block text-sm font-medium text-[#767676]">Phone Number</label>
+              <p className="text-lg text-[#444444]">{profile?.phone || 'Not set'}</p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-500">Account Type</label>
-              <p className="text-lg text-gray-900 capitalize">{profile?.role}</p>
+              <label className="block text-sm font-medium text-[#767676]">Account Type</label>
+              <p className="text-lg text-[#444444] capitalize">{profile?.role}</p>
             </div>
 
             {profile?.role === 'dealer' && (
               <>
                 <div>
-                  <label className="block text-sm font-medium text-gray-500">Agency Name</label>
-                  <p className="text-lg text-gray-900">{profile?.agency_name || 'Not set'}</p>
+                  <label className="block text-sm font-medium text-[#767676]">Agency Name</label>
+                  <p className="text-lg text-[#444444]">{profile?.agency_name || 'Not set'}</p>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-500">Bio</label>
-                  <p className="text-lg text-gray-900">{profile?.bio || 'Not set'}</p>
+                  <label className="block text-sm font-medium text-[#767676]">Bio</label>
+                  <p className="text-lg text-[#444444]">{profile?.bio || 'Not set'}</p>
                 </div>
               </>
             )}
 
-            <div className="pt-4 border-t border-gray-200">
-              <label className="block text-sm font-medium text-gray-500">Member Since</label>
-              <p className="text-lg text-gray-900">
+            <div className="pt-4 border-t border-[#c1bfbf]/30">
+              <label className="block text-sm font-medium text-[#767676]">Member Since</label>
+              <p className="text-lg text-[#444444]">
                 {new Date(profile?.created_at || '').toLocaleDateString()}
               </p>
             </div>
@@ -256,14 +256,14 @@ export default function ProfilePage() {
       </div>
 
       {/* Danger Zone */}
-      <div className="bg-white rounded-lg shadow-md p-6 mt-6 border-2 border-red-200">
-        <h2 className="text-xl font-bold text-red-600 mb-2">Danger Zone</h2>
-        <p className="text-sm text-gray-600 mb-4">
+      <div className="bg-white rounded-lg shadow-sm border-2 border-[#d31a1a]/30 p-6 mt-6">
+        <h2 className="text-xl font-bold text-[#d31a1a] mb-2">Danger Zone</h2>
+        <p className="text-sm text-[#767676] mb-4">
           Once you delete your account, there is no going back. Please be certain.
         </p>
         <button
           onClick={handleDeleteAccount}
-          className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 font-semibold"
+          className="bg-[#d31a1a] text-white px-6 py-3 rounded-lg hover:bg-red-700 font-bold transition-all duration-200 shadow-sm hover:shadow-md"
         >
           Delete My Account
         </button>

@@ -296,7 +296,7 @@ export default function NewPropertyPage() {
           <button
             type="submit"
             disabled={loading}
-            className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400"
+            className="flex-1 bg-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-700 disabled:bg-gray-400"
           >
             {loading ? 'Creating...' : 'Create Property'}
           </button>

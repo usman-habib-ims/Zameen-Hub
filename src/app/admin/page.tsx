@@ -329,7 +329,7 @@ export default function AdminPage() {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-4 border-[#33a137]"></div>
       </div>
     )
   }
@@ -338,49 +338,49 @@ export default function AdminPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
       <div className="mb-6 sm:mb-8">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Admin Panel</h1>
-        <p className="text-sm sm:text-base text-gray-600">Manage your ZameenHub platform</p>
+        <h1 className="text-2xl sm:text-3xl font-bold text-[#444444] mb-2">Admin Panel</h1>
+        <p className="text-sm sm:text-base text-[#767676]">Manage your ZameenHub platform</p>
       </div>
 
       {/* Tab Navigation */}
-      <div className="mb-6 sm:mb-8 border-b border-gray-200 overflow-x-auto">
+      <div className="mb-6 sm:mb-8 border-b border-[#c1bfbf]/30 overflow-x-auto">
         <nav className="-mb-px flex space-x-4 sm:space-x-8 min-w-max sm:min-w-0">
           <button
             onClick={() => setActiveTab('dashboard')}
-            className={`pb-3 sm:pb-4 px-2 sm:px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
+            className={`pb-3 sm:pb-4 px-2 sm:px-1 border-b-2 font-medium text-sm whitespace-nowrap transition-colors duration-150 ${
               activeTab === 'dashboard'
-                ? 'border-blue-500 text-blue-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                ? 'border-[#33a137] text-[#33a137]'
+                : 'border-transparent text-[#767676] hover:text-[#444444] hover:border-[#c1bfbf]'
             }`}
           >
             Dashboard
           </button>
           <button
             onClick={() => setActiveTab('properties')}
-            className={`pb-3 sm:pb-4 px-2 sm:px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
+            className={`pb-3 sm:pb-4 px-2 sm:px-1 border-b-2 font-medium text-sm whitespace-nowrap transition-colors duration-150 ${
               activeTab === 'properties'
-                ? 'border-blue-500 text-blue-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                ? 'border-[#33a137] text-[#33a137]'
+                : 'border-transparent text-[#767676] hover:text-[#444444] hover:border-[#c1bfbf]'
             }`}
           >
             Property Approvals
           </button>
           <button
             onClick={() => setActiveTab('users')}
-            className={`pb-3 sm:pb-4 px-2 sm:px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
+            className={`pb-3 sm:pb-4 px-2 sm:px-1 border-b-2 font-medium text-sm whitespace-nowrap transition-colors duration-150 ${
               activeTab === 'users'
-                ? 'border-blue-500 text-blue-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                ? 'border-[#33a137] text-[#33a137]'
+                : 'border-transparent text-[#767676] hover:text-[#444444] hover:border-[#c1bfbf]'
             }`}
           >
             User Management
           </button>
           <button
             onClick={() => setActiveTab('dealer_approvals')}
-            className={`pb-3 sm:pb-4 px-2 sm:px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
+            className={`pb-3 sm:pb-4 px-2 sm:px-1 border-b-2 font-medium text-sm whitespace-nowrap transition-colors duration-150 ${
               activeTab === 'dealer_approvals'
-                ? 'border-blue-500 text-blue-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                ? 'border-[#33a137] text-[#33a137]'
+                : 'border-transparent text-[#767676] hover:text-[#444444] hover:border-[#c1bfbf]'
             }`}
           >
             Dealer Approvals
@@ -392,24 +392,24 @@ export default function AdminPage() {
       {activeTab === 'dashboard' && (
         <div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white rounded-lg shadow-sm border border-[#c1bfbf]/30 p-6 hover:shadow-md transition-shadow duration-200">
               <div className="flex items-center">
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-600">Total Properties</p>
-                  <p className="text-2xl sm:text-3xl font-bold text-gray-900">{stats.totalProperties}</p>
+                  <p className="text-sm font-medium text-[#767676]">Total Properties</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-[#444444]">{stats.totalProperties}</p>
                 </div>
-                <div className="bg-blue-100 rounded-full p-3">
-                  <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="bg-[#33a137]/10 rounded-full p-3">
+                  <svg className="w-8 h-8 text-[#33a137]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                   </svg>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white rounded-lg shadow-sm border border-[#c1bfbf]/30 p-6 hover:shadow-md transition-shadow duration-200">
               <div className="flex items-center">
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-600">Pending Property Approvals</p>
+                  <p className="text-sm font-medium text-[#767676]">Pending Property Approvals</p>
                   <p className="text-2xl sm:text-3xl font-bold text-yellow-600">{stats.pendingProperties}</p>
                 </div>
                 <div className="bg-yellow-100 rounded-full p-3">
@@ -420,24 +420,24 @@ export default function AdminPage() {
               </div>
             </div>
 
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white rounded-lg shadow-sm border border-[#c1bfbf]/30 p-6 hover:shadow-md transition-shadow duration-200">
               <div className="flex items-center">
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-600">Approved Properties</p>
-                  <p className="text-2xl sm:text-3xl font-bold text-green-600">{stats.approvedProperties}</p>
+                  <p className="text-sm font-medium text-[#767676]">Approved Properties</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-[#33a137]">{stats.approvedProperties}</p>
                 </div>
-                <div className="bg-green-100 rounded-full p-3">
-                  <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="bg-[#33a137]/10 rounded-full p-3">
+                  <svg className="w-8 h-8 text-[#33a137]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white rounded-lg shadow-sm border border-[#c1bfbf]/30 p-6 hover:shadow-md transition-shadow duration-200">
               <div className="flex items-center">
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-600">Pending Dealer Approvals</p>
+                  <p className="text-sm font-medium text-[#767676]">Pending Dealer Approvals</p>
                   <p className="text-2xl sm:text-3xl font-bold text-orange-600">{stats.pendingDealers}</p>
                 </div>
                 <div className="bg-orange-100 rounded-full p-3">
@@ -449,29 +449,29 @@ export default function AdminPage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
+          <div className="bg-white rounded-lg shadow-sm border border-[#c1bfbf]/30 p-6">
+            <h2 className="text-xl font-semibold text-[#444444] mb-4">Quick Actions</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <button
                 onClick={() => setActiveTab('properties')}
                 className="bg-yellow-50 border-2 border-yellow-200 rounded-lg p-4 text-left hover:bg-yellow-100 transition-colors"
               >
-                <h3 className="font-semibold text-gray-900">Review Pending Properties</h3>
-                <p className="text-sm text-gray-600 mt-1">{stats.pendingProperties} properties awaiting approval</p>
+                <h3 className="font-semibold text-[#444444]">Review Pending Properties</h3>
+                <p className="text-sm text-[#767676] mt-1">{stats.pendingProperties} properties awaiting approval</p>
               </button>
               <button
                 onClick={() => setActiveTab('dealer_approvals')}
                 className="bg-orange-50 border-2 border-orange-200 rounded-lg p-4 text-left hover:bg-orange-100 transition-colors"
               >
-                <h3 className="font-semibold text-gray-900">Review Pending Dealers</h3>
-                <p className="text-sm text-gray-600 mt-1">{stats.pendingDealers} dealers awaiting approval</p>
+                <h3 className="font-semibold text-[#444444]">Review Pending Dealers</h3>
+                <p className="text-sm text-[#767676] mt-1">{stats.pendingDealers} dealers awaiting approval</p>
               </button>
               <button
                 onClick={() => setActiveTab('users')}
-                className="bg-blue-50 border-2 border-blue-200 rounded-lg p-4 text-left hover:bg-blue-100 transition-colors"
+                className="bg-[#33a137]/10 border-2 border-[#33a137]/30 rounded-lg p-4 text-left hover:bg-[#33a137]/20 transition-colors"
               >
-                <h3 className="font-semibold text-gray-900">Manage Users</h3>
-                <p className="text-sm text-gray-600 mt-1">{stats.totalUsers} registered users</p>
+                <h3 className="font-semibold text-[#444444]">Manage Users</h3>
+                <p className="text-sm text-[#767676] mt-1">{stats.totalUsers} registered users</p>
               </button>
             </div> {/* Closing div for grid */}
           </div>
@@ -529,7 +529,7 @@ export default function AdminPage() {
                 fetchProperties()
                 fetchStats()
               }}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 flex items-center gap-2"
+              className="px-4 py-2 bg-[#33a137] text-white rounded-lg font-bold hover:bg-[#2a8a2e] transition-all duration-200 flex items-center gap-2 shadow-sm hover:shadow-md"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -539,14 +539,14 @@ export default function AdminPage() {
           </div>
 
           {fetchingProperties ? (
-            <div className="bg-white rounded-lg shadow-md p-12 text-center">
-              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
-              <p className="text-gray-600">Loading {propertyFilter} properties...</p>
+            <div className="bg-white rounded-lg shadow-sm border border-[#c1bfbf]/30 p-12 text-center">
+              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-4 border-[#33a137] mb-4"></div>
+              <p className="text-[#767676]">Loading {propertyFilter} properties...</p>
             </div>
           ) : properties.length === 0 ? (
-            <div className="bg-white rounded-lg shadow-md p-12 text-center">
-              <p className="text-gray-600 text-lg mb-2">No {propertyFilter === 'all' ? '' : propertyFilter} properties found</p>
-              <p className="text-gray-500 text-sm">Try clicking the Refresh button or check a different filter</p>
+            <div className="bg-white rounded-lg shadow-sm border border-[#c1bfbf]/30 p-12 text-center">
+              <p className="text-[#444444] text-lg font-medium mb-2">No {propertyFilter === 'all' ? '' : propertyFilter} properties found</p>
+              <p className="text-[#767676] text-sm">Try clicking the Refresh button or check a different filter</p>
             </div>
           ) : (
             <>

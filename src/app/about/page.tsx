@@ -6,23 +6,23 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 text-white overflow-hidden">
+      <section className="relative bg-gradient-to-br from-[#33a137] to-[#2a8a2e] text-white overflow-hidden">
         {/* Animated Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full mix-blend-overlay filter blur-3xl animate-blob"></div>
-          <div className="absolute top-0 right-0 w-96 h-96 bg-purple-300 rounded-full mix-blend-overlay filter blur-3xl animate-blob animation-delay-2000"></div>
-          <div className="absolute bottom-0 left-1/2 w-96 h-96 bg-pink-300 rounded-full mix-blend-overlay filter blur-3xl animate-blob animation-delay-4000"></div>
+          <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full mix-blend-overlay filter blur-3xl animate-blob animation-delay-2000"></div>
+          <div className="absolute bottom-0 left-1/2 w-96 h-96 bg-white rounded-full mix-blend-overlay filter blur-3xl animate-blob animation-delay-4000"></div>
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
           <div className="text-center">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-6 animate-fade-in-up">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-6">
               About ZameenHub.pk
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-cyan-200 mt-2">
+              <span className="block text-white/90 mt-2">
                 Your Trusted Real Estate Partner
               </span>
             </h1>
-            <p className="mt-6 max-w-3xl mx-auto text-xl sm:text-2xl text-blue-100 animate-fade-in-up animation-delay-200">
+            <p className="mt-6 max-w-3xl mx-auto text-xl sm:text-2xl text-white/90">
               Connecting property seekers with verified dealers across Pakistan
               since day one
             </p>
@@ -39,46 +39,46 @@ export default function AboutPage() {
           >
             <path
               d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z"
-              fill="white"
+              fill="#f5f5f5"
             />
           </svg>
         </div>
       </section>
 
       {/* Our Story Section */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-[#f5f5f5]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="animate-fade-in-up">
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
+            <div>
+              <h2 className="text-3xl sm:text-4xl font-bold text-[#444444] mb-6">
                 Our Story
               </h2>
-              <p className="text-lg text-gray-600 mb-4">
+              <p className="text-lg text-[#767676] mb-4">
                 ZameenHub.pk was founded with a simple yet powerful vision: to
                 revolutionize the real estate market in Pakistan by creating a
                 transparent, efficient, and trustworthy platform that connects
                 property seekers with verified dealers.
               </p>
-              <p className="text-lg text-gray-600 mb-4">
+              <p className="text-lg text-[#767676] mb-4">
                 We understand that buying, selling, or renting property is one
                 of the most significant decisions in a person's life. That's why
                 we've built a platform that prioritizes trust, transparency, and
                 user experience above all else.
               </p>
-              <p className="text-lg text-gray-600">
+              <p className="text-lg text-[#767676]">
                 Today, we're proud to serve thousands of customers across
                 Pakistan, helping them find their dream properties while
                 empowering dealers to grow their businesses.
               </p>
             </div>
-            <div className="relative animate-fade-in-up animation-delay-200">
-              <div className="aspect-video bg-gradient-to-br from-blue-100 to-indigo-100 rounded-2xl shadow-2xl flex items-center justify-center">
+            <div className="relative">
+              <div className="aspect-video bg-gradient-to-br from-green-50 to-green-100 rounded-lg shadow-lg flex items-center justify-center">
                 <div className="text-center p-8">
                   <div className="text-7xl mb-4">🏢</div>
-                  <p className="text-2xl font-bold text-gray-800">
+                  <p className="text-2xl font-bold text-[#444444]">
                     Building Dreams
                   </p>
-                  <p className="text-gray-600 mt-2">One Property at a Time</p>
+                  <p className="text-[#767676] mt-2">One Property at a Time</p>
                 </div>
               </div>
             </div>
@@ -87,12 +87,12 @@ export default function AboutPage() {
       </section>
 
       {/* Mission & Vision Section */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Mission */}
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-shadow duration-300">
-              <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center mb-6">
+            <div className="bg-white border border-[#c1bfbf]/30 rounded-lg p-8 hover:shadow-lg transition-all duration-300">
+              <div className="w-16 h-16 bg-[#33a137] rounded-lg flex items-center justify-center mb-6">
                 <svg
                   className="w-8 h-8 text-white"
                   fill="none"
@@ -107,10 +107,10 @@ export default function AboutPage() {
                   ></path>
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">
+              <h3 className="text-2xl font-bold text-[#444444] mb-4">
                 Our Mission
               </h3>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-[#767676] leading-relaxed">
                 To provide a seamless, transparent, and efficient real estate
                 platform that empowers property seekers to find their perfect
                 match while enabling dealers to reach a wider audience and grow
@@ -119,8 +119,8 @@ export default function AboutPage() {
             </div>
 
             {/* Vision */}
-            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-shadow duration-300">
-              <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl flex items-center justify-center mb-6">
+            <div className="bg-white border border-[#c1bfbf]/30 rounded-lg p-8 hover:shadow-lg transition-all duration-300">
+              <div className="w-16 h-16 bg-[#33a137] rounded-lg flex items-center justify-center mb-6">
                 <svg
                   className="w-8 h-8 text-white"
                   fill="none"
@@ -141,10 +141,10 @@ export default function AboutPage() {
                   ></path>
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">
+              <h3 className="text-2xl font-bold text-[#444444] mb-4">
                 Our Vision
               </h3>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-[#767676] leading-relaxed">
                 To become Pakistan's most trusted and innovative real estate
                 platform, setting new standards for transparency, reliability,
                 and customer satisfaction in the property market.
@@ -155,13 +155,13 @@ export default function AboutPage() {
       </section>
 
       {/* Core Values Section */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-[#f5f5f5]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold text-[#444444] mb-4">
               Our Core Values
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-lg text-[#767676] max-w-2xl mx-auto">
               The principles that guide everything we do
             </p>
           </div>
@@ -187,7 +187,7 @@ export default function AboutPage() {
                 title: "Trust",
                 description:
                   "We verify every property and dealer to ensure authenticity and build lasting trust with our users.",
-                color: "from-blue-600 to-blue-700",
+                color: "#33a137",
               },
               {
                 icon: (
@@ -208,7 +208,7 @@ export default function AboutPage() {
                 title: "Transparency",
                 description:
                   "Clear pricing, honest listings, and open communication are at the heart of our platform.",
-                color: "from-green-600 to-emerald-700",
+                color: "#33a137",
               },
               {
                 icon: (
@@ -229,7 +229,7 @@ export default function AboutPage() {
                 title: "Innovation",
                 description:
                   "We continuously improve our platform with cutting-edge technology and user feedback.",
-                color: "from-purple-600 to-indigo-700",
+                color: "#33a137",
               },
               {
                 icon: (
@@ -250,7 +250,7 @@ export default function AboutPage() {
                 title: "Customer Focus",
                 description:
                   "Your satisfaction and success are our top priorities in every interaction.",
-                color: "from-pink-600 to-rose-700",
+                color: "#33a137",
               },
             ].map((value, index) => (
               <div
@@ -258,14 +258,15 @@ export default function AboutPage() {
                 className="text-center group hover:transform hover:-translate-y-2 transition-all duration-300"
               >
                 <div
-                  className={`w-20 h-20 bg-gradient-to-br ${value.color} rounded-2xl flex items-center justify-center mx-auto mb-6 text-white group-hover:shadow-2xl transition-shadow duration-300`}
+                  style={{ backgroundColor: value.color }}
+                  className="w-20 h-20 rounded-lg flex items-center justify-center mx-auto mb-6 text-white group-hover:shadow-lg transition-shadow duration-300"
                 >
                   {value.icon}
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">
+                <h3 className="text-xl font-bold text-[#444444] mb-3">
                   {value.title}
                 </h3>
-                <p className="text-gray-600">{value.description}</p>
+                <p className="text-[#767676]">{value.description}</p>
               </div>
             ))}
           </div>
@@ -273,13 +274,13 @@ export default function AboutPage() {
       </section>
 
       {/* Statistics Section */}
-      <section className="py-20 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 text-white">
+      <section className="py-20 bg-[#33a137] text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">
               Our Impact in Numbers
             </h2>
-            <p className="text-xl text-blue-100">
+            <p className="text-xl text-white/90">
               Making a difference in Pakistan's real estate market
             </p>
           </div>
@@ -293,11 +294,11 @@ export default function AboutPage() {
             ].map((stat, index) => (
               <div
                 key={index}
-                className="text-center p-6 bg-white/10 backdrop-blur-sm rounded-2xl hover:bg-white/20 transition-all duration-300 hover:scale-105"
+                className="text-center p-6 bg-white/10 backdrop-blur-sm rounded-lg hover:bg-white/20 transition-all duration-300 hover:scale-105"
               >
                 <div className="text-5xl mb-3">{stat.icon}</div>
                 <div className="text-4xl font-bold mb-2">{stat.number}</div>
-                <div className="text-blue-100">{stat.label}</div>
+                <div className="text-white/90">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -308,10 +309,10 @@ export default function AboutPage() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold text-[#444444] mb-4">
               Meet Our Team
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-lg text-[#767676] max-w-2xl mx-auto">
               Passionate professionals dedicated to transforming real estate in
               Pakistan
             </p>
@@ -323,25 +324,25 @@ export default function AboutPage() {
                 name: "Ahmed Khan",
                 role: "CEO & Founder",
                 initial: "AK",
-                color: "from-blue-500 to-indigo-600",
+                color: "from-[#33a137] to-[#2a8a2e]",
               },
               {
                 name: "Sara Ali",
                 role: "Head of Operations",
                 initial: "SA",
-                color: "from-purple-500 to-pink-600",
+                color: "from-[#33a137] to-[#2a8a2e]",
               },
               {
                 name: "Hassan Malik",
                 role: "Tech Lead",
                 initial: "HM",
-                color: "from-green-500 to-emerald-600",
+                color: "from-[#33a137] to-[#2a8a2e]",
               },
               {
                 name: "Ayesha Raza",
                 role: "Customer Success",
                 initial: "AR",
-                color: "from-orange-500 to-red-600",
+                color: "from-[#33a137] to-[#2a8a2e]",
               },
             ].map((member, index) => (
               <div key={index} className="text-center group">
@@ -351,12 +352,12 @@ export default function AboutPage() {
                   >
                     {member.initial}
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-full opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#33a137] to-[#2a8a2e] rounded-full opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                <h3 className="text-xl font-bold text-[#444444] mb-2">
                   {member.name}
                 </h3>
-                <p className="text-gray-600">{member.role}</p>
+                <p className="text-[#767676]">{member.role}</p>
               </div>
             ))}
           </div>
@@ -364,13 +365,13 @@ export default function AboutPage() {
       </section>
 
       {/* Why Choose Us Section */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-[#f5f5f5]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold text-[#444444] mb-4">
               Why Choose ZameenHub?
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-lg text-[#767676] max-w-2xl mx-auto">
               We go above and beyond to ensure your real estate journey is
               smooth and successful
             </p>
@@ -397,7 +398,7 @@ export default function AboutPage() {
                     ></path>
                   </svg>
                 ),
-                gradient: "from-blue-500 to-indigo-600",
+                gradient: "from-[#33a137] to-[#2a8a2e]",
               },
               {
                 title: "Expert Support",
@@ -418,7 +419,7 @@ export default function AboutPage() {
                     ></path>
                   </svg>
                 ),
-                gradient: "from-purple-500 to-pink-600",
+                gradient: "from-[#33a137] to-[#2a8a2e]",
               },
               {
                 title: "Advanced Search",
@@ -439,7 +440,7 @@ export default function AboutPage() {
                     ></path>
                   </svg>
                 ),
-                gradient: "from-green-500 to-emerald-600",
+                gradient: "from-[#33a137] to-[#2a8a2e]",
               },
             ].map((feature, index) => (
               <div
@@ -451,10 +452,10 @@ export default function AboutPage() {
                 >
                   {feature.icon}
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">
+                <h3 className="text-xl font-bold text-[#444444] mb-3">
                   {feature.title}
                 </h3>
-                <p className="text-gray-600">{feature.description}</p>
+                <p className="text-[#767676]">{feature.description}</p>
               </div>
             ))}
           </div>
@@ -462,25 +463,25 @@ export default function AboutPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
+      <section className="py-20 bg-gradient-to-r from-[#33a137] to-[#2a8a2e] text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold mb-6">
             Ready to Start Your Property Journey?
           </h2>
-          <p className="text-xl text-blue-100 mb-10 max-w-2xl mx-auto">
+          <p className="text-xl text-white/90 mb-10 max-w-2xl mx-auto">
             Join thousands of satisfied customers who found their dream
             properties with ZameenHub
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/signup"
-              className="px-8 py-4 bg-white text-blue-600 font-bold rounded-xl hover:bg-gray-100 transform hover:scale-105 transition-all duration-200 shadow-xl"
+              className="px-8 py-4 bg-white text-[#33a137] font-bold rounded-xl hover:bg-gray-100 transform hover:scale-105 transition-all duration-200 shadow-xl"
             >
               Get Started Now
             </Link>
             <Link
               href="/"
-              className="px-8 py-4 bg-transparent border-2 border-white text-white font-bold rounded-xl hover:bg-white hover:text-blue-600 transform hover:scale-105 transition-all duration-200"
+              className="px-8 py-4 bg-transparent border-2 border-white text-white font-bold rounded-xl hover:bg-white hover:text-[#33a137] transform hover:scale-105 transition-all duration-200"
             >
               Browse Properties
             </Link>

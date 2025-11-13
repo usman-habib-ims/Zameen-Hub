@@ -1,8 +1,8 @@
-// RESPONSIVE FIXES: 2025-11-12
-// - Added hamburger menu for mobile navigation
-// - Made all links touch-friendly (min-height: 44px)
-// - Mobile menu is full-width overlay
-// - Ensured proper stacking and spacing on mobile devices
+// Zameen.com Style Redesign
+// - Clean green and white theme with sticky navigation
+// - Modern Lato typography
+// - Subtle shadow and hover effects
+// - Mobile-responsive hamburger menu
 
 'use client'
 
@@ -70,30 +70,36 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="bg-white shadow-lg">
+    <nav className="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
+        <div className="flex justify-between h-[4.8rem]">
           <div className="flex items-center">
-            <Link href="/" className="text-xl sm:text-2xl font-bold text-blue-600">
-              ZameenHub.pk
+            <Link href="/" className="flex items-center group">
+              <span className="text-2xl sm:text-3xl font-bold text-[#33a137] tracking-tight">
+                Zameen
+              </span>
+              <span className="text-2xl sm:text-3xl font-light text-gray-600">
+                Hub
+              </span>
+              <span className="text-sm font-medium text-gray-500 ml-1">.pk</span>
             </Link>
-            <div className="hidden md:ml-6 md:flex md:space-x-8">
+            <div className="hidden md:ml-10 md:flex md:space-x-1">
               <Link
                 href="/"
-                className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                className="text-[#444444] hover:text-[#33a137] inline-flex items-center px-3 py-2 text-sm font-medium transition-colors duration-200"
               >
                 Properties
               </Link>
               <Link
                 href="/about"
-                className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                className="text-[#444444] hover:text-[#33a137] inline-flex items-center px-3 py-2 text-sm font-medium transition-colors duration-200"
               >
                 About
               </Link>
               {profile?.role === 'dealer' && (
                 <Link
                   href="/dashboard"
-                  className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                  className="text-[#444444] hover:text-[#33a137] inline-flex items-center px-3 py-2 text-sm font-medium transition-colors duration-200"
                 >
                   Dashboard
                 </Link>
@@ -101,7 +107,7 @@ export default function Navbar() {
               {profile?.role === 'admin' && (
                 <Link
                   href="/admin"
-                  className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                  className="text-[#444444] hover:text-[#33a137] inline-flex items-center px-3 py-2 text-sm font-medium transition-colors duration-200"
                 >
                   Admin
                 </Link>
@@ -109,25 +115,25 @@ export default function Navbar() {
               {profile && (
                 <Link
                   href="/saved"
-                  className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                  className="text-[#444444] hover:text-[#33a137] inline-flex items-center px-3 py-2 text-sm font-medium transition-colors duration-200"
                 >
-                  Saved Properties
+                  Saved
                 </Link>
               )}
             </div>
           </div>
-          <div className="flex items-center space-x-2 sm:space-x-4">
+          <div className="flex items-center space-x-3">
             {!loading && !profile ? (
               <>
                 <Link
                   href="/login"
-                  className="hidden sm:inline-block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium min-h-[44px] flex items-center"
+                  className="hidden sm:inline-flex text-[#767676] hover:text-[#33a137] px-4 py-2 text-sm font-medium transition-colors duration-200"
                 >
                   Sign in
                 </Link>
                 <Link
                   href="/signup"
-                  className="hidden sm:inline-block bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-md text-sm font-medium min-h-[44px] flex items-center"
+                  className="hidden sm:inline-flex bg-[#33a137] text-white hover:bg-[#2a8a2e] px-5 py-2.5 rounded text-sm font-bold transition-all duration-200 shadow-sm hover:shadow-md"
                 >
                   Sign up
                 </Link>
@@ -137,20 +143,20 @@ export default function Navbar() {
                 {profile.role === 'dealer' && (
                   <Link
                     href="/properties/new"
-                    className="hidden sm:inline-block bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-md text-sm font-medium min-h-[44px] flex items-center"
+                    className="hidden sm:inline-flex bg-[#33a137] text-white hover:bg-[#2a8a2e] px-5 py-2.5 rounded text-sm font-bold transition-all duration-200 shadow-sm hover:shadow-md"
                   >
-                    Add Property
+                    + Add Property
                   </Link>
                 )}
                 <Link
                   href="/profile"
-                  className="hidden sm:inline-block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium min-h-[44px] flex items-center"
+                  className="hidden sm:inline-flex text-[#767676] hover:text-[#33a137] px-4 py-2 text-sm font-medium transition-colors duration-200"
                 >
                   {profile.full_name || 'Profile'}
                 </Link>
                 <button
                   onClick={handleSignOut}
-                  className="hidden sm:inline-block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium min-h-[44px] flex items-center"
+                  className="hidden sm:inline-flex text-[#767676] hover:text-[#d31a1a] px-4 py-2 text-sm font-medium transition-colors duration-200"
                 >
                   Sign out
                 </button>
@@ -159,7 +165,7 @@ export default function Navbar() {
             {/* Mobile menu button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+              className="md:hidden inline-flex items-center justify-center p-2 rounded-md text-[#444444] hover:text-[#33a137] hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#33a137] transition-colors duration-200"
               aria-expanded="false"
             >
               <span className="sr-only">Open main menu</span>
@@ -179,18 +185,18 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1">
+        <div className="md:hidden border-t border-gray-200 bg-white">
+          <div className="px-4 pt-2 pb-3 space-y-1">
             <Link
               href="/"
-              className="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 min-h-[44px]"
+              className="block px-3 py-3 rounded text-base font-medium text-[#444444] hover:text-[#33a137] hover:bg-gray-50 min-h-[44px] transition-colors duration-200"
               onClick={() => setMobileMenuOpen(false)}
             >
               Properties
             </Link>
             <Link
               href="/about"
-              className="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 min-h-[44px]"
+              className="block px-3 py-3 rounded text-base font-medium text-[#444444] hover:text-[#33a137] hover:bg-gray-50 min-h-[44px] transition-colors duration-200"
               onClick={() => setMobileMenuOpen(false)}
             >
               About
@@ -198,7 +204,7 @@ export default function Navbar() {
             {profile?.role === 'dealer' && (
               <Link
                 href="/dashboard"
-                className="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 min-h-[44px]"
+                className="block px-3 py-3 rounded text-base font-medium text-[#444444] hover:text-[#33a137] hover:bg-gray-50 min-h-[44px] transition-colors duration-200"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Dashboard
@@ -207,7 +213,7 @@ export default function Navbar() {
             {profile?.role === 'admin' && (
               <Link
                 href="/admin"
-                className="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 min-h-[44px]"
+                className="block px-3 py-3 rounded text-base font-medium text-[#444444] hover:text-[#33a137] hover:bg-gray-50 min-h-[44px] transition-colors duration-200"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Admin
@@ -216,7 +222,7 @@ export default function Navbar() {
             {profile && (
               <Link
                 href="/saved"
-                className="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 min-h-[44px]"
+                className="block px-3 py-3 rounded text-base font-medium text-[#444444] hover:text-[#33a137] hover:bg-gray-50 min-h-[44px] transition-colors duration-200"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Saved Properties
@@ -226,14 +232,14 @@ export default function Navbar() {
               <>
                 <Link
                   href="/login"
-                  className="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 min-h-[44px]"
+                  className="block px-3 py-3 rounded text-base font-medium text-[#444444] hover:text-[#33a137] hover:bg-gray-50 min-h-[44px] transition-colors duration-200"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Sign in
                 </Link>
                 <Link
                   href="/signup"
-                  className="block px-3 py-3 rounded-md text-base font-medium bg-blue-600 text-white hover:bg-blue-700 min-h-[44px]"
+                  className="block px-3 py-3 rounded text-base font-bold bg-[#33a137] text-white hover:bg-[#2a8a2e] min-h-[44px] transition-all duration-200"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Sign up
@@ -244,15 +250,15 @@ export default function Navbar() {
                 {profile.role === 'dealer' && (
                   <Link
                     href="/properties/new"
-                    className="block px-3 py-3 rounded-md text-base font-medium bg-blue-600 text-white hover:bg-blue-700 min-h-[44px]"
+                    className="block px-3 py-3 rounded text-base font-bold bg-[#33a137] text-white hover:bg-[#2a8a2e] min-h-[44px] transition-all duration-200"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    Add Property
+                    + Add Property
                   </Link>
                 )}
                 <Link
                   href="/profile"
-                  className="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 min-h-[44px]"
+                  className="block px-3 py-3 rounded text-base font-medium text-[#444444] hover:text-[#33a137] hover:bg-gray-50 min-h-[44px] transition-colors duration-200"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {profile.full_name || 'Profile'}
@@ -262,7 +268,7 @@ export default function Navbar() {
                     setMobileMenuOpen(false)
                     handleSignOut()
                   }}
-                  className="block w-full text-left px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 min-h-[44px]"
+                  className="block w-full text-left px-3 py-3 rounded text-base font-medium text-[#767676] hover:text-[#d31a1a] hover:bg-gray-50 min-h-[44px] transition-colors duration-200"
                 >
                   Sign out
                 </button>
@@ -274,5 +280,3 @@ export default function Navbar() {
     </nav>
   )
 }
-
-// .env file checked

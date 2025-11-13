@@ -1,8 +1,8 @@
-// RESPONSIVE FIXES: 2025-11-12
-// - Made filter grid fully responsive (grid-cols-1 sm:grid-cols-2 lg:grid-cols-4)
-// - All dropdowns and inputs are full-width on mobile
-// - Touch targets are minimum 44px (py-2 = 32px + border = 44px+)
-// - Proper spacing and wrapping on all screen sizes
+// Zameen.com Style Property Filters
+// - Clean, minimal design with rounded inputs
+// - Green focus states
+// - Responsive grid layout
+// - Subtle borders and shadows
 
 'use client'
 
@@ -53,16 +53,38 @@ export default function PropertyFilters({ onFilterChange }: PropertyFiltersProps
     onFilterChange(newFilters)
   }
 
+  const inputClassName = "w-full border border-[#c1bfbf] rounded px-3 py-2.5 text-sm text-[#444444] focus:outline-none focus:ring-2 focus:ring-[#33a137] focus:border-transparent transition-all"
+
   return (
-    <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md mb-6">
-      <h2 className="text-lg font-semibold mb-4">Filter Properties</h2>
+    <div className="bg-white p-5 rounded-lg shadow-sm mb-6 border border-[#c1bfbf]/30">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-lg font-bold text-[#444444]">Search Filters</h2>
+        <button
+          onClick={() => {
+            const resetFilters = {
+              propertyType: '',
+              city: '',
+              minPrice: '',
+              maxPrice: '',
+              bedrooms: '',
+              furnishing: '',
+              sortBy: 'created_at',
+            }
+            setFilters(resetFilters)
+            onFilterChange(resetFilters)
+          }}
+          className="text-sm text-[#767676] hover:text-[#33a137] transition-colors duration-200"
+        >
+          Clear All
+        </button>
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-[#444444] mb-2">
             Property Type
           </label>
           <select
-            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className={inputClassName}
             value={filters.propertyType}
             onChange={(e) => handleFilterChange('propertyType', e.target.value)}
           >
@@ -75,11 +97,11 @@ export default function PropertyFilters({ onFilterChange }: PropertyFiltersProps
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-[#444444] mb-2">
             City
           </label>
           <select
-            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className={inputClassName}
             value={filters.city}
             onChange={(e) => handleFilterChange('city', e.target.value)}
           >
@@ -92,11 +114,11 @@ export default function PropertyFilters({ onFilterChange }: PropertyFiltersProps
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-[#444444] mb-2">
             Bedrooms
           </label>
           <select
-            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className={inputClassName}
             value={filters.bedrooms}
             onChange={(e) => handleFilterChange('bedrooms', e.target.value)}
           >
@@ -110,11 +132,11 @@ export default function PropertyFilters({ onFilterChange }: PropertyFiltersProps
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-[#444444] mb-2">
             Furnishing
           </label>
           <select
-            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className={inputClassName}
             value={filters.furnishing}
             onChange={(e) => handleFilterChange('furnishing', e.target.value)}
           >
@@ -126,12 +148,12 @@ export default function PropertyFilters({ onFilterChange }: PropertyFiltersProps
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-[#444444] mb-2">
             Min Price (PKR)
           </label>
           <input
             type="number"
-            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className={inputClassName}
             value={filters.minPrice}
             onChange={(e) => handleFilterChange('minPrice', e.target.value)}
             placeholder="Any"
@@ -139,12 +161,12 @@ export default function PropertyFilters({ onFilterChange }: PropertyFiltersProps
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-[#444444] mb-2">
             Max Price (PKR)
           </label>
           <input
             type="number"
-            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className={inputClassName}
             value={filters.maxPrice}
             onChange={(e) => handleFilterChange('maxPrice', e.target.value)}
             placeholder="Any"
@@ -152,11 +174,11 @@ export default function PropertyFilters({ onFilterChange }: PropertyFiltersProps
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-[#444444] mb-2">
             Sort By
           </label>
           <select
-            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className={inputClassName}
             value={filters.sortBy}
             onChange={(e) => handleFilterChange('sortBy', e.target.value)}
           >

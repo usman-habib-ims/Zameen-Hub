@@ -75,7 +75,7 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-4 border-[#33a137]"></div>
       </div>
     )
   }
@@ -84,74 +84,75 @@ export default function DashboardPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">My Properties</h1>
-          <p className="text-gray-600 mt-1">Manage your property listings</p>
+          <h1 className="text-3xl font-bold text-[#444444]">My Properties</h1>
+          <p className="text-[#767676] mt-1">Manage your property listings</p>
         </div>
         <Link
           href="/properties/new"
-          className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700"
+          className="bg-[#33a137] text-white px-6 py-3 rounded-lg font-bold hover:bg-[#2a8a2e] transition-all duration-200 shadow-sm hover:shadow-md"
         >
           + Add New Property
         </Link>
       </div>
 
       {properties.length === 0 ? (
-        <div className="bg-white rounded-lg shadow-md p-12 text-center">
-          <p className="text-gray-600 mb-4">You haven't listed any properties yet</p>
+        <div className="bg-white rounded-lg shadow-sm border border-[#c1bfbf]/30 p-12 text-center">
+          <div className="text-6xl mb-4">🏘️</div>
+          <p className="text-[#767676] mb-4">You haven't listed any properties yet</p>
           <Link
             href="/properties/new"
-            className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700"
+            className="inline-block bg-[#33a137] text-white px-6 py-3 rounded-lg font-bold hover:bg-[#2a8a2e] transition-all duration-200 shadow-sm hover:shadow-md"
           >
             Create Your First Listing
           </Link>
         </div>
       ) : (
-        <div className="bg-white rounded-lg shadow-md overflow-hidden">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+        <div className="bg-white rounded-lg shadow-sm border border-[#c1bfbf]/30 overflow-hidden">
+          <table className="min-w-full divide-y divide-[#c1bfbf]/30">
+            <thead className="bg-[#f5f5f5]">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-bold text-[#444444] uppercase tracking-wider">
                   Property
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-bold text-[#444444] uppercase tracking-wider">
                   Type
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-bold text-[#444444] uppercase tracking-wider">
                   Price
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-bold text-[#444444] uppercase tracking-wider">
                   Status
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-bold text-[#444444] uppercase tracking-wider">
                   Approval
                 </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-right text-xs font-bold text-[#444444] uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-white divide-y divide-[#c1bfbf]/30">
               {properties.map((property) => (
-                <tr key={property.id}>
+                <tr key={property.id} className="hover:bg-[#f5f5f5]/50 transition-colors duration-150">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <div className="flex-shrink-0 h-16 w-16">
                         <img
-                          className="h-16 w-16 rounded object-cover"
+                          className="h-16 w-16 rounded object-cover border border-[#c1bfbf]/30"
                           src={property.property_images[0]?.image_url || '/placeholder-property.svg'}
                           alt=""
                         />
                       </div>
                       <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">{property.title}</div>
-                        <div className="text-sm text-gray-500">{property.city}</div>
+                        <div className="text-sm font-medium text-[#444444]">{property.title}</div>
+                        <div className="text-sm text-[#767676]">{property.city}</div>
                       </div>
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="capitalize text-sm text-gray-900">{property.property_type}</span>
+                    <span className="capitalize text-sm text-[#444444]">{property.property_type}</span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-[#33a137]">
                     PKR {property.price?.toLocaleString()}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -175,19 +176,19 @@ export default function DashboardPage() {
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <Link
                       href={`/properties/${property.id}`}
-                      className="text-blue-600 hover:text-blue-900 mr-4"
+                      className="text-[#33a137] hover:text-[#2a8a2e] font-semibold mr-4 transition-colors duration-150"
                     >
                       View
                     </Link>
                     <Link
                       href={`/properties/${property.id}/edit`}
-                      className="text-indigo-600 hover:text-indigo-900 mr-4"
+                      className="text-[#33a137] hover:text-[#2a8a2e] font-semibold mr-4 transition-colors duration-150"
                     >
                       Edit
                     </Link>
                     <button
                       onClick={() => handleDelete(property.id)}
-                      className="text-red-600 hover:text-red-900"
+                      className="text-[#d31a1a] hover:text-red-900 font-semibold transition-colors duration-150"
                     >
                       Delete
                     </button>
