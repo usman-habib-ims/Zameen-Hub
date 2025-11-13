@@ -134,6 +134,7 @@ html {
 /* Custom scrollbar - Zameen style */
 ::-webkit-scrollbar {
   width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
@@ -147,6 +148,31 @@ html {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #2a8a2e;
+}
+
+/* Horizontal scrollbar for tables */
+.table-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-scroll::-webkit-scrollbar-track {
+  background: #f9fafb;
+  border-radius: 4px;
+}
+
+.table-scroll::-webkit-scrollbar-thumb {
+  background: #33a137;
+  border-radius: 4px;
+}
+
+.table-scroll::-webkit-scrollbar-thumb:hover {
+  background: #2a8a2e;
+}
+
+/* Smooth scrolling for horizontal tables */
+.table-scroll {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Zameen-style hover transitions */

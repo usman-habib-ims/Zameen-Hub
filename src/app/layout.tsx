@@ -19,6 +19,12 @@ export const metadata: Metadata = {
   description: "Pakistan's premier real estate platform connecting property dealers with buyers and renters",
 };
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -32,10 +38,10 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden`}
       >
         <Navbar />
-        <main className="min-h-screen bg-[#f5f5f5]">
+        <main className="min-h-screen bg-[#f5f5f5] overflow-x-hidden">
           {children}
         </main>
         <Footer />
