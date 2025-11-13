@@ -22,9 +22,7 @@ type Property = Database['public']['Tables']['properties']['Row'] & {
   profiles: { full_name: string | null; agency_name: string | null }
 }
 
-type Profile = Database['public']['Tables']['profiles']['Row'] & {
-  approval_status: 'pending' | 'approved' | 'rejected';
-}
+type Profile = Database['public']['Tables']['profiles']['Row']
 
 type Stats = {
   totalProperties: number
@@ -688,7 +686,7 @@ export default function AdminPage() {
                         {dealer.email}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {dealer.phone_number || 'N/A'}
+                        {dealer.phone || 'N/A'}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {new Date(dealer.created_at).toLocaleDateString()}
@@ -777,7 +775,7 @@ export default function AdminPage() {
                       )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {user.phone_number || '-'}
+                      {user.phone || '-'}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <select
